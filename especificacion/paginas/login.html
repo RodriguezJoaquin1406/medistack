@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MediStack — Iniciar Sesión</title>
+  <style>
+    :root {
+      --bg-color: #f4f6f9;
+      --card-bg: #ffffff;
+      --text-main: #1f2937;
+      --text-muted: #6b7280;
+      --primary: #0284c7;
+      --primary-hover: #0369a1;
+      --border-color: #d1d5db;
+      --error-bg: #fee2e2;
+      --error-border: #ef4444;
+      --error-text: #b91c1c;
+      --warning-bg: #fef3c7;
+      --warning-border: #f59e0b;
+      --warning-text: #b45309;
+      --focus-ring: rgba(2, 132, 199, 0.4);
+    }
+
+    body.high-contrast {
+      --bg-color: #000000;
+      --card-bg: #121212;
+      --text-main: #ffffff;
+      --text-muted: #e5e7eb;
+      --primary: #facc15;
+      --primary-hover: #eab308;
+      --border-color: #ffffff;
+      --error-bg: #450a0a;
+      --error-border: #ff0000;
+      --error-text: #ffffff;
+      --warning-bg: #451a03;
+      --warning-border: #ffff00;
+      --warning-text: #ffffff;
+      --focus-ring: rgba(250, 204, 21, 0.8);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      transition: background-color 0.2s, color 0.2s;
+    }
+
+    .accessibility-bar {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .accessibility-btn {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      padding: 0.4rem 0.8rem;
+      border-radius: 4px;
+      font-size: 0.85rem;
+      cursor: pointer;
+    }
+
+    .accessibility-btn:focus {
+      outline: 2px solid var(--primary);
+    }
+
+    .login-container {
+      width: 100%;
+      max-width: 420px;
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+      padding: 2.5rem 2rem;
+    }
+
+    .brand-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .brand-logo {
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: var(--primary);
+      display: inline-block;
+      margin-bottom: 0.5rem;
+    }
+
+    .brand-subtitle {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+    }
+
+    .alert {
+      padding: 0.75rem 1rem;
+      border-radius: 6px;
+      font-size: 0.875rem;
+      margin-bottom: 1.25rem;
+      border-left: 4px solid;
+    }
+
+    .alert-error {
+      background-color: var(--error-bg);
+      border-color: var(--error-border);
+      color: var(--error-text);
+    }
+
+    .alert-warning {
+      background-color: var(--warning-bg);
+      border-color: var(--warning-border);
+      color: var(--warning-text);
+    }
+
+    .form-group {
+      margin-bottom: 1.25rem;
+    }
+
+    label {
+      display: block;
+      font-size: 0.875rem;
+      font-weight: 600;
+      margin-bottom: 0.4rem;
+    }
+
+    input[type="text"],
+    input[type="password"] {
+      width: 100%;
+      padding: 0.75rem;
+      border: 1px solid var(--border-color);
+      background-color: var(--card-bg);
+      color: var(--text-main);
+      border-radius: 6px;
+      font-size: 1rem;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+
+    input:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px var(--focus-ring);
+    }
+
+    .btn-submit {
+      width: 100%;
+      background-color: var(--primary);
+      color: #ffffff;
+      border: none;
+      padding: 0.85rem;
+      border-radius: 6px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 0.5rem;
+      transition: background-color 0.15s;
+    }
+
+    body.high-contrast .btn-submit {
+      color: #000000;
+    }
+
+    .btn-submit:hover {
+      background-color: var(--primary-hover);
+    }
+
+    .btn-submit:focus {
+      outline: 2px solid var(--text-main);
+      outline-offset: 2px;
+    }
+
+    .login-footer {
+      text-align: center;
+      margin-top: 1.5rem;
+      font-size: 0.875rem;
+      color: var(--text-muted);
+    }
+
+    .login-footer a {
+      color: var(--primary);
+      text-decoration: underline;
+    }
+
+    .state-selector {
+      margin-top: 2rem;
+      padding: 1rem;
+      background: #e2e8f0;
+      border-radius: 6px;
+      font-size: 0.8rem;
+    }
+
+    body.high-contrast .state-selector {
+      background: #1e293b;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="accessibility-bar">
+    <button class="accessibility-btn" onclick="document.body.classList.toggle('high-contrast')" aria-label="Alternar modo de alto contraste">
+      🌓 Alto Contraste
+    </button>
+  </div>
+
+  <main class="login-container" role="main">
+    <header class="brand-header">
+      <div class="brand-logo" aria-label="Logo MediStack">MediStack</div>
+      <h1 class="brand-subtitle">Portal de Acceso Clínico y Administrativo</h1>
+    </header>
+
+    <!-- Estado: Error genérico de autenticación (Anti-enumeración) -->
+    <div id="alert-error" class="alert alert-error" role="alert" style="display: none;">
+      <strong>Error:</strong> Usuario o contraseña incorrectos.
+    </div>
+
+    <!-- Estado: Cuenta bloqueada por intentos fallidos -->
+    <div id="alert-lockout" class="alert alert-warning" role="alert" style="display: none;">
+      <strong>Acceso Bloqueado:</strong> Ha superado el límite de 5 intentos fallidos. Su cuenta está bloqueada durante 15 minutos por motivos de seguridad.
+    </div>
+
+    <form onsubmit="event.preventDefault();" aria-label="Formulario de inicio de sesión">
+      <div class="form-group">
+        <label for="username">Usuario o Correo Electrónico <span aria-hidden="true">*</span></label>
+        <input type="text" id="username" name="username" required autocomplete="username" placeholder="ej. usuario@clinica.com o jperez">
+      </div>
+
+      <div class="form-group">
+        <label for="password">Contraseña <span aria-hidden="true">*</span></label>
+        <input type="password" id="password" name="password" required autocomplete="current-password" placeholder="••••••••">
+      </div>
+
+      <button type="submit" class="btn-submit">Ingresar al Sistema</button>
+    </form>
+
+    <footer class="login-footer">
+      <p>¿No tiene una cuenta? <a href="registro.html">Regístrese como paciente</a></p>
+    </footer>
+
+    <!-- Controles de simulación de estados de mock (Solo para revisión de diseño) -->
+    <div class="state-selector" aria-label="Simulador de estados de mock">
+      <strong>Simulación de Estados (Mock):</strong>
+      <div style="display: flex; gap: 0.5rem; margin-top: 0.5rem; flex-wrap: wrap;">
+        <button type="button" class="accessibility-btn" onclick="showState('normal')">Normal</button>
+        <button type="button" class="accessibility-btn" onclick="showState('error')">Credenciales Inválidas</button>
+        <button type="button" class="accessibility-btn" onclick="showState('lockout')">Cuenta Bloqueada</button>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    function showState(state) {
+      document.getElementById('alert-error').style.display = state === 'error' ? 'block' : 'none';
+      document.getElementById('alert-lockout').style.display = state === 'lockout' ? 'block' : 'none';
+    }
+  </script>
+</body>
+</html>

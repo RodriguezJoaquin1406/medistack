@@ -36,16 +36,19 @@ Permite que los distintos tipos de usuarios de la plataforma (*pacientes*, *prof
 - Inicio de sesion
 - Recuperacion de contraseñas
 
-### Entidades necesarias
+### Entidades
 
 > Usuario
-    - Nombre
-    - Apellido
-    - Contraseña
-    - Correo
-    - Dni
-    - Rol
-    - Nro telefono
+
+### Diccionario de datos (SIN TIPOS)
+> Usuario
+    - Nombre           
+    - Apellido         
+    - Contraseña       
+    - Correo           
+    - Dni              
+    - Rol              
+    - Nro telefono     
     - ? Obra social (esto deberia ser una tabla intermedia creo)
 
 ### Entidad

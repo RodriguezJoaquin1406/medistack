@@ -1,43 +1,97 @@
-# Roadmap general 
+# Roadmap General de Especificación — MediStack
 
-Este archivo funciona de checklist general del proyecto, actualmente va a tener los requerimientos y si fueron procesados o no.
+Este documento actúa como el checklist maestro del avance en la Fase 0 (Diseño y Especificación).  
+Registra el progreso del flujo de trabajo por cada módulo:
+1. **Lectura del requerimiento funcional** en `requerimientos/`.
+2. **Traspaso de información técnica** a la especificación global agrupada en `especificacion/` (`basededatos/`, `dominio/`, `paginas/`, `incognitas/`).
+3. **Marcado del requerimiento como finalizado**.
 
-##  ├── 1_RegistrarUsurios/         []     # Req 1: Autenticación, roles y credenciales
-1. Entidades del requerimiento      []
-1. Diccionario de datos             []
-1. Diccionario aprobado             []
-1. Tabla SQL                        []
-1. Clase C#                         []
-1. Funciones que interactuan con DB []
-1. Incognitas por definir a futuro  []
-1. Especificacion redactada         []
-1. Mock Visual HTML                 []
-  - Revisar estetica          []
-  - Revisar Paleta de colores []
-1. Validar que todo este terminado  []
-  - Marcar como terminado en ROADMAP
+---
 
+## Módulos de Requerimientos
 
-##  ├── 2_GestionarTurnos/               # Req 2: Reserva, señas 50%, cancelación y reprogramación
+### 01. Registrar e Iniciar Sesión de Usuarios (`requerimientos/01_RegistrarUsurios/`)
+- [x] 1. Leer requerimiento funcional
+- [x] 2. Trasladar información técnica a `especificacion/`:
+  - [x] Entidades de dominio (`especificacion/dominio/`)
+  - [x] Diccionario de datos y tablas SQL (`especificacion/basededatos/`)
+  - [x] Prototipos de páginas HTML/CSS (`especificacion/paginas/`)
+  - [x] Incógnitas y decisiones registradas (`especificacion/incognitas/`)
+- [x] 3. Marcar requerimiento como finalizado (Aprobado y verificado por el usuario)
 
-##  ├── 3_GestionPacientes/              # Req 3: Padrón y gestión de pacientes
+---
 
-##  ├── 4_GestionProfesionales/          # Req 4: Matrículas, especialidades y disponibilidad
+### 02. Gestión Integral de Turnos (`requerimientos/02_GestionarTurnos/`)
+- [ ] 1. Leer requerimiento funcional
+- [ ] 2. Trasladar información técnica a `especificacion/` (basededatos, dominio, paginas, incognitas)
+- [ ] 3. Marcar requerimiento como finalizado
 
-##  ├── 5_GestionarObrasSociales/        # Req 5: Coberturas y convenios tripartitos
+---
 
-##  ├── 6_FichaMedicaPaciente/           # Req 6: Ficha clínica e historial cronológico
+### 03. Gestión y Padrón de Pacientes (`requerimientos/03_GestionPacientes/`)
+- [ ] 1. Leer requerimiento funcional
+- [ ] 2. Trasladar información técnica a `especificacion/` (basededatos, dominio, paginas, incognitas)
+- [ ] 3. Marcar requerimiento como finalizado
 
-##  ├── 7_CobrosCajaDiaria/              # Req 7: Cobros, copagos, señas y caja diaria
+---
 
-##  ├── 8_RegistrarAusentes/             # Req 8: Conciliación y registro de ausencias
+### 04. Gestión de Profesionales y Agendas (`requerimientos/04_GestionProfesionales/`)
+- [ ] 1. Leer requerimiento funcional
+- [ ] 2. Trasladar información técnica a `especificacion/` (basededatos, dominio, paginas, incognitas)
+- [ ] 3. Marcar requerimiento como finalizado
 
-##  ├── 9_LiquidacionHonorarios/         # Req 9: Liquidación a profesionales
+---
 
-##  ├── 10_ReportesAdministrativos/      # Req 10: Métricas y reportes administrativos
+### 05. Gestión de Obras Sociales y Convenios (`requerimientos/05_GestionarObrasSociales/`)
+- [ ] 1. Leer requerimiento funcional
+- [ ] 2. Trasladar información técnica a `especificacion/` (basededatos, dominio, paginas, incognitas)
+- [ ] 3. Marcar requerimiento como finalizado
 
-##  ├── 11_Agente_IA/                    # Req 11: Orquestación del Asistente Clínico de IA
+---
 
-##  ├── RequerimientosNoFuncionales.md   # Desempeño, seguridad, disponibilidad y accesibilidad
+### 06. Ficha Médica e Historial Cronológico (`requerimientos/06_FichaMedicaPaciente/`)
+- [ ] 1. Leer requerimiento funcional
+- [ ] 2. Trasladar información técnica a `especificacion/` (basededatos, dominio, paginas, incognitas)
+- [ ] 3. Marcar requerimiento como finalizado
 
-##  └── ejemploRequerimiento1/           # Referencia de trabajo (req1.md y req1.html)
+---
+
+### 07. Cobros y Caja Diaria (`requerimientos/07_CobrosCajaDiaria/`)
+- [ ] 1. Leer requerimiento funcional
+- [ ] 2. Trasladar información técnica a `especificacion/` (basededatos, dominio, paginas, incognitas)
+- [ ] 3. Marcar requerimiento como finalizado
+
+---
+
+### 08. Registro de Ausencias y Conciliación (`requerimientos/08_RegistrarAusentes/`)
+- [ ] 1. Leer requerimiento funcional
+- [ ] 2. Trasladar información técnica a `especificacion/` (basededatos, dominio, paginas, incognitas)
+- [ ] 3. Marcar requerimiento como finalizado
+
+---
+
+### 09. Liquidación Periódica de Honorarios (`requerimientos/09_LiquidacionHonorarios/`)
+- [ ] 1. Leer requerimiento funcional
+- [ ] 2. Trasladar información técnica a `especificacion/` (basededatos, dominio, paginas, incognitas)
+- [ ] 3. Marcar requerimiento como finalizado
+
+---
+
+### 10. Reportes Administrativos y Métricas (`requerimientos/10_ReportesAdministrativos/`)
+- [ ] 1. Leer requerimiento funcional
+- [ ] 2. Trasladar información técnica a `especificacion/` (basededatos, dominio, paginas, incognitas)
+- [ ] 3. Marcar requerimiento como finalizado
+
+---
+
+### 11. Asistente Clínico de IA (`requerimientos/11_Agente_IA/`)
+- [ ] 1. Leer requerimiento funcional
+- [ ] 2. Trasladar información técnica a `especificacion/` (basededatos, dominio, paginas, incognitas)
+- [ ] 3. Marcar requerimiento como finalizado
+
+---
+
+### Requerimientos No Funcionales (`requerimientos/RequerimientosNoFuncionales.md`)
+- [ ] 1. Leer requerimientos no funcionales (desempeño, seguridad, disponibilidad, accesibilidad)
+- [ ] 2. Trasladar restricciones y políticas técnicas a la especificación en `especificacion/`
+- [ ] 3. Marcar como finalizado
