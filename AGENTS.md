@@ -53,7 +53,7 @@ Este documento define las reglas de comportamiento, restricciones inviolables y 
 
 Para consultar artefactos de ingeniería y guías de proceso, remitirse a:
 
-- **Plantilla SDD, Estructura de Carpetas, Capa de Negocio y DoD:** [`spec/guia-especificacion.md`](file:///C:/Users/ujr001/proyectos/medistack/spec/guia-especificacion.md).
+- **Plantilla SDD, Estructura de Carpetas, Capa de Negocio y DoD:** [`spec/spec_guide.md`](file:///C:/Users/ujr001/proyectos/medistack/spec/guia-especificacion.md).
 - **Estado Actual y Hoja de Ruta Operativa:** [`spec/present.md`](file:///C:/Users/ujr001/proyectos/medistack/spec/present.md).
 
 
@@ -74,12 +74,25 @@ requerimientos/
 ```
 
 ### Proceso de Iteración con la IA:
-1. Se toma **un requerimiento a la vez**.
+1. Se toma **un requerimiento a la vez**.  
 2. Se analiza el requerimiento funcional (Inputs, Processing, Outputs, Error Handling).
 3. Se extraen y definen las **Entidades de Dominio** y sus relaciones.
-4. Se elabora el **Diccionario de Datos** con tipos de datos de SQL Server y constraints.
-5. Se redacta la especificación completa siguiendo la plantilla estandarizada de [`spec/guia-especificacion.md`](file:///C:/Users/ujr001/proyectos/medistack/spec/guia-especificacion.md).
-6. Se crea el mock visual estático en HTML (`.html`).
-7. Se actualiza el checklist central en [`spec/guia-especificacion.md`](file:///C:/Users/ujr001/proyectos/medistack/spec/guia-especificacion.md).
+
+**POR CADA ENTIDAD DE DOMINIO** 
+4. Se elabora una propuesta de **Diccionario de Datos** con tipos de datos SQL SERVER.
+
+**PAUSA: "HUMAN IN THE LOOP", SE LE PROPONE DICCIONARIO DE DATOS AL USUARIO ESPERANDO SU APROBACION ANTES DE DOCUMENTAR**
+
+5. Se crea propuesta de tabla SQL para cada entidad mencionada.
+6. Se crea propuesta de clase C# para cada entidad mencionada.
+7. Se crea una lista de posibles funciones de interaccion con base de datos que deban existir
+    - Unicamente nombre de la funcion y la necesidad de la misma
+
+*Despues de Terminar con TODAS las entidades*
+8. Se crea una lista de incognitas que los desarrolladores deberan responder y definir cuando sea el desarrollo
+9. Se redacta la especificación completa siguiendo la plantilla estandarizada de [`spec/guia-especificacion.md`](file:///C:/Users/ujr001/proyectos/medistack/spec/guia-especificacion.md).
+10. Se crea el mock visual estático en HTML (`.html`).
+*SI SE CUMPLIERON TODOS LOS PASOS ENTONCES:*
+11. Se actualiza el checklist central en [`spec/guia-especificacion.md`](file:///C:/Users/ujr001/proyectos/medistack/spec/guia-especificacion.md).
 
 ---

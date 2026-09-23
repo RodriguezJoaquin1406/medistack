@@ -2,15 +2,20 @@
 
 Este archivo funciona de checklist general del proyecto, actualmente va a tener los requerimientos y si fueron procesados o no.
 
-##  ├── 1_RegistrarUsurios/              # Req 1: Autenticación, roles y credenciales
-1. Que debe cumplir []
-2. Entidades necesarias []
-3. Clase C# [] 
-  + Tipos de datos []
-4. Tabla SQL [] 
-  + Tipos de datos []
-5.  Posibles Funciones []
-
+##  ├── 1_RegistrarUsurios/         []     # Req 1: Autenticación, roles y credenciales
+1. Entidades del requerimiento      []
+1. Diccionario de datos             []
+1. Diccionario aprobado             []
+1. Tabla SQL                        []
+1. Clase C#                         []
+1. Funciones que interactuan con DB []
+1. Incognitas por definir a futuro  []
+1. Especificacion redactada         []
+1. Mock Visual HTML                 []
+  - Revisar estetica          []
+  - Revisar Paleta de colores []
+1. Validar que todo este terminado  []
+  - Marcar como terminado en ROADMAP
 
 
 ##  ├── 2_GestionarTurnos/               # Req 2: Reserva, señas 50%, cancelación y reprogramación

@@ -1,18 +1,17 @@
 ## 1. Estructura de Archivos y Carpetas del Proyecto
 
-El repositorio desacopla el comportamiento de los agentes (`AGENTS.md`), las notas y fuente original (`personal/`), el estado operativo (`spec/`) y el trabajo modular de especificación (`requerimientos/`):
+**RECORDATORIO**: Repositorio maneja unicamente SDD nada de codigo
 
 ```text
 medistack/
-├── AGENTS.md                               # Reglas de gobierno, restricciones y directrices para IAs
-├── README.md                               # Visión general y fases del proyecto
-├── personal/
-│   ├── MediStack_Requerimientos.md         # Documento monolítico original (SSOT histórico)
-│   └── anotaciones.md                      # Notas y acuerdos de trabajo
+├── AGENTS.md                               # Reglas, restricciones y directrices para IAs
 ├── spec/
 │   ├── present.md                          # Estado actual del proyecto y estrategia operativa
-│   ├── guia-especificacion.md              # Esta guía (arquitectura, plantilla SDD y DoD)
-│   └── database/                           # Esquema global consolidado y ERD maestro
+│   ├── architecture.md                     # Archivo actual sobre estructura de carpetas del proyecto
+│   ├── mission.md                          # Propuesta del proyecto
+│   ├── roadmap.md                          # Checklist de Requerimientos ya procesado
+│   ├── spec_guide.md                       # Reglas 
+│   └── database/                           # Vacio
 └── requerimientos/                         # Módulos desglosados para especificación
     ├── 1_RegistrarUsurios/                 # Req 1: Autenticación, roles y credenciales
     ├── 2_GestionarTurnos/                  # Req 2: Reserva, señas 50%, cancelación y reprogramación
