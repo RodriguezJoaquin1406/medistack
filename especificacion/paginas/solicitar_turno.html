@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MediStack — Solicitar y Reservar Turno</title>
+  <style>
+    :root {
+      --bg-color: #f4f6f9;
+      --card-bg: #ffffff;
+      --text-main: #1f2937;
+      --text-muted: #6b7280;
+      --primary: #0284c7;
+      --primary-hover: #0369a1;
+      --border-color: #d1d5db;
+      --success-bg: #ecfdf5;
+      --success-border: #10b981;
+      --success-text: #065f46;
+      --error-bg: #fee2e2;
+      --error-border: #ef4444;
+      --error-text: #b91c1c;
+      --warning-bg: #fef3c7;
+      --warning-border: #f59e0b;
+      --warning-text: #b45309;
+      --focus-ring: rgba(2, 132, 199, 0.4);
+      --badge-covered: #dbeafe;
+      --badge-covered-text: #1e40af;
+      --badge-private: #fef3c7;
+      --badge-private-text: #92400e;
+    }
+
+    body.high-contrast {
+      --bg-color: #000000;
+      --card-bg: #121212;
+      --text-main: #ffffff;
+      --text-muted: #e5e7eb;
+      --primary: #facc15;
+      --primary-hover: #eab308;
+      --border-color: #ffffff;
+      --success-bg: #064e3b;
+      --success-border: #10b981;
+      --success-text: #ffffff;
+      --error-bg: #450a0a;
+      --error-border: #ff0000;
+      --error-text: #ffffff;
+      --warning-bg: #451a03;
+      --warning-border: #ffff00;
+      --warning-text: #ffffff;
+      --focus-ring: rgba(250, 204, 21, 0.8);
+      --badge-covered: #1e3a8a;
+      --badge-covered-text: #ffffff;
+      --badge-private: #78350f;
+      --badge-private-text: #ffffff;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      background: var(--card-bg);
+      border-bottom: 1px solid var(--border-color);
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .brand-icon {
+      width: 32px;
+      height: 32px;
+      background: var(--primary);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: bold;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 1.5rem;
+      align-items: center;
+    }
+
+    .nav-link {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.95rem;
+      font-weight: 500;
+    }
+
+    .nav-link.active {
+      color: var(--primary);
+      font-weight: 600;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+      width: 100%;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 2rem;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    }
+
+    .steps-indicator {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 2rem;
+      position: relative;
+    }
+
+    .steps-indicator::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: var(--border-color);
+      z-index: 1;
+      transform: translateY(-50%);
+    }
+
+    .step-node {
+      position: relative;
+      z-index: 2;
+      background: var(--card-bg);
+      padding: 0 0.5rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.25rem;
+    }
+
+    .step-circle {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: 2px solid var(--border-color);
+      background: var(--card-bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 0.85rem;
+    }
+
+    .step-node.active .step-circle {
+      border-color: var(--primary);
+      background: var(--primary);
+      color: white;
+    }
+
+    .step-node.completed .step-circle {
+      border-color: var(--success-border);
+      background: var(--success-border);
+      color: white;
+    }
+
+    .step-label {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .step-node.active .step-label {
+      color: var(--primary);
+      font-weight: 600;
+    }
+
+    .form-group {
+      margin-bottom: 1.25rem;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 0.4rem;
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+
+    select, input[type="date"], input[type="text"], textarea {
+      width: 100%;
+      padding: 0.75rem;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      font-size: 0.95rem;
+      background: var(--card-bg);
+      color: var(--text-main);
+    }
+
+    select:focus, input:focus, textarea:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px var(--focus-ring);
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .professionals-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .professional-card {
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      padding: 1.25rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      transition: border-color 0.2s, background-color 0.2s;
+    }
+
+    .professional-card:hover {
+      border-color: var(--primary);
+      background-color: rgba(2, 132, 199, 0.02);
+    }
+
+    .professional-card.selected {
+      border-color: var(--primary);
+      border-width: 2px;
+      background-color: rgba(2, 132, 199, 0.04);
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 0.25rem 0.6rem;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+
+    .badge-covered {
+      background: var(--badge-covered);
+      color: var(--badge-covered-text);
+    }
+
+    .badge-private {
+      background: var(--badge-private);
+      color: var(--badge-private-text);
+    }
+
+    .slots-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 0.75rem;
+    }
+
+    .slot-btn {
+      padding: 0.4rem 0.8rem;
+      border: 1px solid var(--border-color);
+      background: var(--card-bg);
+      color: var(--text-main);
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.85rem;
+    }
+
+    .slot-btn:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+
+    .slot-btn.selected {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: white;
+    }
+
+    .alert {
+      padding: 1rem;
+      border-radius: 6px;
+      font-size: 0.9rem;
+      margin-bottom: 1.25rem;
+      border-left: 4px solid;
+    }
+
+    .alert-warning {
+      background: var(--warning-bg);
+      border-color: var(--warning-border);
+      color: var(--warning-text);
+    }
+
+    .alert-error {
+      background: var(--error-bg);
+      border-color: var(--error-border);
+      color: var(--error-text);
+    }
+
+    .alert-success {
+      background: var(--success-bg);
+      border-color: var(--success-border);
+      color: var(--success-text);
+    }
+
+    .btn {
+      padding: 0.75rem 1.5rem;
+      border-radius: 6px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      transition: background-color 0.2s;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-hover);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+    }
+
+    .payment-box {
+      border: 1px dashed var(--border-color);
+      background: #fafafa;
+      border-radius: 6px;
+      padding: 1.5rem;
+      margin: 1.5rem 0;
+    }
+
+    .payment-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 0.5rem;
+      font-size: 0.95rem;
+    }
+
+    .payment-row.total {
+      font-weight: bold;
+      border-top: 1px solid var(--border-color);
+      padding-top: 0.5rem;
+      font-size: 1.05rem;
+      color: var(--primary);
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="brand">
+      <div class="brand-icon">M</div>
+      <h2 style="font-size: 1.25rem;">MediStack Clínico</h2>
+    </div>
+    <nav class="nav-links">
+      <a href="mis_turnos.html" class="nav-link">Mis Turnos</a>
+      <a href="solicitar_turno.html" class="nav-link active">Solicitar Turno</a>
+      <a href="login.html" class="nav-link">Cerrar Sesión</a>
+    </nav>
+  </header>
+
+  <main class="container">
+
+    <!-- SIMULACIÓN DE ESTADO DE ERROR REGLA DE NEGOCIO: Turno pendiente activo -->
+    <div id="bannerTurnoPendiente" class="alert alert-error" style="display: none;">
+      <strong>⚠️ Reserva Bloqueada:</strong> Usted ya posee un turno pendiente activo (<strong>Cardiología - 28/09/2026 10:30 hs</strong>). La política del centro médico requiere concluir o cancelar el turno existente antes de reservar uno nuevo.
+    </div>
+
+    <div class="card">
+      <div class="steps-indicator">
+        <div class="step-node completed">
+          <div class="step-circle">1</div>
+          <span class="step-label">Especialidad</span>
+        </div>
+        <div class="step-node active">
+          <div class="step-circle">2</div>
+          <span class="step-label">Profesional y Hora</span>
+        </div>
+        <div class="step-node">
+          <div class="step-circle">3</div>
+          <span class="step-label">Motivo y Seña</span>
+        </div>
+        <div class="step-node">
+          <div class="step-circle">4</div>
+          <span class="step-label">Confirmación</span>
+        </div>
+      </div>
+
+      <h3 style="margin-bottom: 0.5rem;">Paso 2: Selección de Profesional y Horario</h3>
+      <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem;">
+        Especialidad seleccionada: <strong>Cardiología Adultos</strong> | Fecha: <strong>28/09/2026</strong>
+      </p>
+
+      <div class="alert alert-warning">
+        <strong>Información de Cobertura:</strong> Su obra social registrada es <strong>OSDE (Plan 210)</strong>. Si el profesional no posee convenio con su cobertura, el sistema solicitará una <strong>seña del 50% ($4.500 ARS)</strong> mediante pasarela electrónica para garantizar la reserva.
+      </div>
+
+      <div class="professionals-list">
+        <!-- Profesional 1: Con Convenio -->
+        <div class="professional-card selected">
+          <div>
+            <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.25rem;">
+              <h4 style="font-size: 1rem;">Dra. Elena Ramos</h4>
+              <span class="badge badge-covered">✓ Cubierto por su Obra Social</span>
+            </div>
+            <p style="font-size: 0.85rem; color: var(--text-muted);">Matrícula: MN-48291 • Consultorio 104 • Duración: 30 min</p>
+            <p style="font-size: 0.85rem; color: var(--success-text); margin-top: 0.25rem;"><strong>Sin cobro de seña anticipada (100% cubierto)</strong></p>
+
+            <div class="slots-grid">
+              <button type="button" class="slot-btn selected">09:00</button>
+              <button type="button" class="slot-btn">09:30</button>
+              <button type="button" class="slot-btn">11:00</button>
+              <button type="button" class="slot-btn">11:30</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Profesional 2: Sin Convenio (Particular / Requiere Seña) -->
+        <div class="professional-card">
+          <div>
+            <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.25rem;">
+              <h4 style="font-size: 1rem;">Dr. Marcos Benítez</h4>
+              <span class="badge badge-private">⚠️ Atención Particular (Sin Convenio)</span>
+            </div>
+            <p style="font-size: 0.85rem; color: var(--text-muted);">Matrícula: MN-39102 • Consultorio 202 • Duración: 30 min</p>
+            <p style="font-size: 0.85rem; color: var(--warning-text); margin-top: 0.25rem;">
+              Valor consulta: $9.000 ARS • <strong>Seña requerida del 50%: $4.500 ARS</strong>
+            </p>
+
+            <div class="slots-grid">
+              <button type="button" class="slot-btn">14:00</button>
+              <button type="button" class="slot-btn">14:30</button>
+              <button type="button" class="slot-btn">15:00</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group" style="margin-top: 1.5rem;">
+        <label for="motivo">Motivo o razón de la consulta:</label>
+        <textarea id="motivo" rows="3" placeholder="Indique brevemente el motivo del turno (ej. chequeo preventivo, dolor precordial, control postquirúrgico)..."></textarea>
+      </div>
+
+      <!-- Cuadro de Liquidación y Pasarela -->
+      <div class="payment-box">
+        <h4 style="font-size: 0.95rem; margin-bottom: 0.75rem;">Resumen de Liquidación del Turno</h4>
+        <div class="payment-row">
+          <span>Consulta Médica Especializada:</span>
+          <span>$9.000,00 ARS</span>
+        </div>
+        <div class="payment-row">
+          <span>Cobertura OSDE Plan 210:</span>
+          <span style="color: var(--success-text);">- $9.000,00 ARS (100%)</span>
+        </div>
+        <div class="payment-row total">
+          <span>Seña a abonar hoy:</span>
+          <span>$0,00 ARS</span>
+        </div>
+        <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.5rem;">
+          * En caso de seleccionar atención particular, se requerirá tarjeta de crédito/débito para integrar la seña de $4.500 ARS con confirmación instantánea.
+        </p>
+      </div>
+
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 1.5rem;">
+        <button type="button" class="btn btn-secondary">← Volver al Paso 1</button>
+        <button type="button" class="btn btn-primary">Confirmar Reserva de Turno →</button>
+      </div>
+    </div>
+  </main>
+
+</body>
+</html>

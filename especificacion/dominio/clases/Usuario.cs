@@ -1,7 +1,8 @@
 // ============================================================================
 // MediStack — Capa de Dominio
-// Requerimientos origen: Req 01 (Registrar Usuarios)
+// Requerimientos origen: Req 01 (Registrar Usuarios), Req 02 (Gestionar Turnos)
 // Descripción: Entidad descriptiva del Usuario en el modelo de dominio.
+//              Actualizada para incorporar navegación hacia turnos (como paciente o profesional).
 // ============================================================================
 
 using System;
@@ -34,6 +35,8 @@ namespace MediStack.Domain.Entities
         // Propiedades de navegación
         public virtual Rol Rol { get; set; }
         public virtual ICollection<AuditoriaAcceso> AuditoriasAcceso { get; set; }
+        public virtual ICollection<Turno> TurnosComoPaciente { get; set; }
+        public virtual ICollection<Turno> TurnosComoProfesional { get; set; }
 
         public Usuario()
         {
@@ -42,6 +45,8 @@ namespace MediStack.Domain.Entities
             IntentosFallidos = 0;
             FechaRegistro = DateTime.UtcNow;
             AuditoriasAcceso = new HashSet<AuditoriaAcceso>();
+            TurnosComoPaciente = new HashSet<Turno>();
+            TurnosComoProfesional = new HashSet<Turno>();
         }
     }
 }

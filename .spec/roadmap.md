@@ -22,9 +22,13 @@ Registra el progreso del flujo de trabajo por cada módulo:
 ---
 
 ### 02. Gestión Integral de Turnos (`requerimientos/02_GestionarTurnos/`)
-- [ ] 1. Leer requerimiento funcional
-- [ ] 2. Trasladar información técnica a `especificacion/` (basededatos, dominio, paginas, incognitas)
-- [ ] 3. Marcar requerimiento como finalizado
+- [x] 1. Leer requerimiento funcional
+- [x] 2. Trasladar información técnica a `especificacion/`:
+  - [x] Entidades de dominio (`especificacion/dominio/`)
+  - [x] Diccionario de datos y tablas SQL (`especificacion/basededatos/`)
+  - [x] Prototipos de páginas HTML/CSS (`especificacion/paginas/`)
+  - [x] Incógnitas y decisiones registradas (`especificacion/incognitas/`)
+- [x] 3. Marcar requerimiento como finalizado (Aprobado y verificado por el usuario)
 
 ---
 

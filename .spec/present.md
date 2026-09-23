@@ -9,10 +9,11 @@
 - [`.spec/spec_guide.md`](file:///C:/Users/ujr001/proyectos/medistack/.spec/spec_guide.md): Guía de estándares técnicos, arquitectura de especificación por capas, Definition of Done y checklist maestro.
 - [`.spec/architecture.md`](file:///C:/Users/ujr001/proyectos/medistack/.spec/architecture.md): Estructura del repositorio y arquitectura técnica global.
 - [`.spec/mission.md`](file:///C:/Users/ujr001/proyectos/medistack/.spec/mission.md): Declaración de misión, alcance y objetivos del sistema.
-- [`.spec/roadmap.md`](file:///C:/Users/ujr001/proyectos/medistack/.spec/roadmap.md): Checklist de seguimiento del avance por requerimiento. **Módulo 01 completado y verificado.**
+- [`.spec/roadmap.md`](file:///C:/Users/ujr001/proyectos/medistack/.spec/roadmap.md): Checklist de seguimiento del avance por requerimiento. **Módulos 01 y 02 completados y verificados.**
 - `requerimientos/`: Contiene los requerimientos funcionales desglosados en subdirectorios modulares (`01_RegistrarUsurios/`, `02_GestionarTurnos/`, etc.). Son insumos de lectura funcional; **no se enriquecen técnicamente dentro de estas carpetas**.
 - `especificacion/`: Carpeta técnica centralizada que aloja la especificación técnica agrupada y estructurada por capas de documentación en español (`basededatos/`, `dominio/`, `paginas/`, `incognitas/`).
   - **Módulo 01 (Usuarios y Autenticación):** Especificado y aprobado en sus 4 capas técnicas.
+  - **Módulo 02 (Gestión Integral de Turnos):** Especificado y aprobado en sus 4 capas técnicas.
 
 ---
 
@@ -30,10 +31,10 @@ El flujo operativo acordado consiste en:
 Al continuar con la especificación:
 1. Asumir el rol de **Arquitecto de Software y Analista Funcional Senior**.
 2. Respetar la **Regla Cero** (cero código ejecutable operativo; solo especificaciones descriptivas, modelos y prototipos estáticos).
-3. Iniciar el procesamiento del **Módulo 02: Gestión Integral de Turnos** ([`requerimientos/02_GestionarTurnos/requerimiento.md`](file:///C:/Users/ujr001/proyectos/medistack/requerimientos/02_GestionarTurnos/requerimiento.md)):
-   - Leer requerimiento funcional (estados de turnos, reserva con seña 50%, cancelación, reprogramación).
-   - Incorporar o evolucionar tablas y tipos SQL en `especificacion/basededatos/`.
-   - Incorporar o evolucionar clases de dominio C# en `especificacion/dominio/`.
-   - Desarrollar prototipos visuales en `especificacion/paginas/`.
+3. Iniciar el procesamiento del **Módulo 03: Gestión y Padrón de Pacientes** ([`requerimientos/03_GestionPacientes/requerimiento.md`](file:///C:/Users/ujr001/proyectos/medistack/requerimientos/03_GestionPacientes/requerimiento.md)):
+   - Leer requerimiento funcional (alta, baja, modificación, consulta de pacientes, vinculación con obras sociales y datos de filiación).
+   - Incorporar o evolucionar tablas y tipos SQL en `especificacion/basededatos/` (ej. `Pacientes.sql`).
+   - Incorporar o evolucionar clases de dominio C# en `especificacion/dominio/` (ej. `Paciente.cs`).
+   - Desarrollar prototipos visuales en `especificacion/paginas/` (ej. listado y ficha de paciente).
    - Documentar supuestos y decisiones en `especificacion/incognitas/`.
    - Presentar el lote para aprobación y marcar el avance en [`.spec/roadmap.md`](file:///C:/Users/ujr001/proyectos/medistack/.spec/roadmap.md).

@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MediStack — Mis Turnos y Consultas</title>
+  <style>
+    :root {
+      --bg-color: #f4f6f9;
+      --card-bg: #ffffff;
+      --text-main: #1f2937;
+      --text-muted: #6b7280;
+      --primary: #0284c7;
+      --primary-hover: #0369a1;
+      --border-color: #d1d5db;
+      --success-bg: #ecfdf5;
+      --success-border: #10b981;
+      --success-text: #065f46;
+      --error-bg: #fee2e2;
+      --error-border: #ef4444;
+      --error-text: #b91c1c;
+      --warning-bg: #fef3c7;
+      --warning-border: #f59e0b;
+      --warning-text: #b45309;
+      --focus-ring: rgba(2, 132, 199, 0.4);
+      --badge-confirmed-bg: #d1fae5;
+      --badge-confirmed-text: #065f46;
+      --badge-pending-bg: #fef3c7;
+      --badge-pending-text: #92400e;
+      --badge-cancelled-bg: #fee2e2;
+      --badge-cancelled-text: #991b1b;
+    }
+
+    body.high-contrast {
+      --bg-color: #000000;
+      --card-bg: #121212;
+      --text-main: #ffffff;
+      --text-muted: #e5e7eb;
+      --primary: #facc15;
+      --primary-hover: #eab308;
+      --border-color: #ffffff;
+      --success-bg: #064e3b;
+      --success-border: #10b981;
+      --success-text: #ffffff;
+      --error-bg: #450a0a;
+      --error-border: #ff0000;
+      --error-text: #ffffff;
+      --warning-bg: #451a03;
+      --warning-border: #ffff00;
+      --warning-text: #ffffff;
+      --focus-ring: rgba(250, 204, 21, 0.8);
+      --badge-confirmed-bg: #064e3b;
+      --badge-confirmed-text: #ffffff;
+      --badge-pending-bg: #78350f;
+      --badge-pending-text: #ffffff;
+      --badge-cancelled-bg: #7f1d1d;
+      --badge-cancelled-text: #ffffff;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      background: var(--card-bg);
+      border-bottom: 1px solid var(--border-color);
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .brand-icon {
+      width: 32px;
+      height: 32px;
+      background: var(--primary);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: bold;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 1.5rem;
+      align-items: center;
+    }
+
+    .nav-link {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.95rem;
+      font-weight: 500;
+    }
+
+    .nav-link.active {
+      color: var(--primary);
+      font-weight: 600;
+    }
+
+    .container {
+      max-width: 960px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+      width: 100%;
+    }
+
+    .header-section {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 1rem;
+      border-bottom: 1px solid var(--border-color);
+      margin-bottom: 1.5rem;
+    }
+
+    .tab-btn {
+      padding: 0.75rem 1rem;
+      background: none;
+      border: none;
+      border-bottom: 2px solid transparent;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      cursor: pointer;
+    }
+
+    .tab-btn.active {
+      color: var(--primary);
+      border-bottom-color: var(--primary);
+    }
+
+    .appointment-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1.5rem;
+      margin-bottom: 1rem;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 1rem;
+    }
+
+    .badge-status {
+      display: inline-block;
+      padding: 0.25rem 0.6rem;
+      border-radius: 4px;
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+
+    .badge-confirmed {
+      background: var(--badge-confirmed-bg);
+      color: var(--badge-confirmed-text);
+    }
+
+    .badge-pending {
+      background: var(--badge-pending-bg);
+      color: var(--badge-pending-text);
+    }
+
+    .badge-cancelled {
+      background: var(--badge-cancelled-bg);
+      color: var(--badge-cancelled-text);
+    }
+
+    .appointment-details {
+      flex: 1;
+    }
+
+    .appointment-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-bottom: 0.35rem;
+    }
+
+    .appointment-meta {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      margin-bottom: 0.5rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .appointment-reason {
+      font-size: 0.9rem;
+      margin-top: 0.5rem;
+      padding: 0.5rem;
+      background: #f8fafc;
+      border-radius: 4px;
+      border-left: 3px solid var(--primary);
+    }
+
+    .appointment-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      min-width: 170px;
+    }
+
+    .btn {
+      padding: 0.6rem 1rem;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-align: center;
+      text-decoration: none;
+      border: 1px solid transparent;
+      transition: background-color 0.2s, opacity 0.2s;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+    }
+
+    .btn-secondary {
+      background: white;
+      border-color: var(--border-color);
+      color: var(--text-main);
+    }
+
+    .btn-danger {
+      background: #fee2e2;
+      border-color: #fca5a5;
+      color: var(--error-text);
+    }
+
+    .btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .notice-rule {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      text-align: center;
+    }
+
+    /* Modal de confirmación para acción crítica: Cancelación */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.5);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+      z-index: 100;
+    }
+
+    .modal-box {
+      background: var(--card-bg);
+      border-radius: 8px;
+      max-width: 480px;
+      width: 100%;
+      padding: 1.5rem;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    }
+
+    .modal-header {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+    }
+
+    .modal-body {
+      font-size: 0.95rem;
+      color: var(--text-main);
+      line-height: 1.5;
+      margin-bottom: 1.5rem;
+    }
+
+    .modal-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 0.75rem;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="brand">
+      <div class="brand-icon">M</div>
+      <h2 style="font-size: 1.25rem;">MediStack Clínico</h2>
+    </div>
+    <nav class="nav-links">
+      <a href="mis_turnos.html" class="nav-link active">Mis Turnos</a>
+      <a href="solicitar_turno.html" class="nav-link">Solicitar Turno</a>
+      <a href="login.html" class="nav-link">Cerrar Sesión</a>
+    </nav>
+  </header>
+
+  <main class="container">
+    <div class="header-section">
+      <div>
+        <h2>Gestión de Turnos y Consultas</h2>
+        <p style="color: var(--text-muted); font-size: 0.9rem;">Consulte sus turnos agendados, solicite reprogramaciones o cancelaciones.</p>
+      </div>
+      <a href="solicitar_turno.html" class="btn btn-primary">+ Solicitar Nuevo Turno</a>
+    </div>
+
+    <div class="tabs">
+      <button class="tab-btn active">Próximos Turnos (2)</button>
+      <button class="tab-btn">Historial de Turnos (8)</button>
+    </div>
+
+    <!-- Turno 1: Confirmado, con más de 24 horas (Operaciones habilitadas con reintegro) -->
+    <div class="appointment-card">
+      <div class="appointment-details">
+        <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.25rem;">
+          <span class="badge-status badge-confirmed">● Confirmado</span>
+          <span style="font-size: 0.8rem; color: var(--text-muted);">Código: <strong>TRN-2026-0814</strong></span>
+        </div>
+        <h3 class="appointment-title">Dra. Elena Ramos — Cardiología Adultos</h3>
+        <div class="appointment-meta">
+          <span>📅 <strong>Lunes 28 de Septiembre, 2026</strong></span>
+          <span>⏰ <strong>09:00 hs</strong> (30 min)</span>
+          <span>📍 Consultorio 104</span>
+        </div>
+        <div class="appointment-meta">
+          <span>Cobertura: <strong>OSDE Plan 210</strong> (100% Cubierto)</span>
+        </div>
+        <div class="appointment-reason">
+          <strong>Motivo:</strong> Control cardiológico preventivo anual.
+        </div>
+      </div>
+      <div class="appointment-actions">
+        <button class="btn btn-secondary">Reprogramar</button>
+        <button class="btn btn-danger" onclick="document.getElementById('modalCancelacion').style.display='flex'">Cancelar Turno</button>
+        <span class="notice-rule">Permitido hasta 27/09 09:00 hs (24h antes)</span>
+      </div>
+    </div>
+
+    <!-- Turno 2: Con menos de 24 horas (Operaciones bloqueadas por política de 24 horas) -->
+    <div class="appointment-card" style="border-left: 4px solid var(--warning-border);">
+      <div class="appointment-details">
+        <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.25rem;">
+          <span class="badge-status badge-confirmed">● Confirmado</span>
+          <span style="font-size: 0.8rem; color: var(--text-muted);">Código: <strong>TRN-2026-0799</strong></span>
+          <span style="font-size: 0.75rem; background: var(--warning-bg); color: var(--warning-text); padding: 0.15rem 0.4rem; border-radius: 4px;">Atención en menos de 24h</span>
+        </div>
+        <h3 class="appointment-title">Dr. Marcos Benítez — Dermatología Clínica</h3>
+        <div class="appointment-meta">
+          <span>📅 <strong>Hoy, 23 de Septiembre, 2026</strong></span>
+          <span>⏰ <strong>18:30 hs</strong> (30 min)</span>
+          <span>📍 Consultorio 202</span>
+        </div>
+        <div class="appointment-meta">
+          <span>Atención: <strong>Particular</strong> • Seña abonada: <strong>$4.500 ARS</strong> (50%)</span>
+        </div>
+        <div class="appointment-reason">
+          <strong>Motivo:</strong> Revisión de lunares en dorso.
+        </div>
+      </div>
+      <div class="appointment-actions">
+        <button class="btn btn-secondary" disabled title="No es posible reprogramar con menos de 24 horas de anticipación.">Reprogramar</button>
+        <button class="btn btn-danger" disabled title="No es posible cancelar con menos de 24 horas de anticipación.">Cancelar Turno</button>
+        <span class="notice-rule" style="color: var(--error-text);">Bloqueado: faltan menos de 24h</span>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- MODAL DE CONFIRMACIÓN HUMANA (Regla de confirmación explícita para cancelación) -->
+  <div id="modalCancelacion" class="modal-backdrop">
+    <div class="modal-box">
+      <div class="modal-header">⚠️ Confirmar Cancelación de Turno</div>
+      <div class="modal-body">
+        <p>¿Está seguro de que desea cancelar su turno con la <strong>Dra. Elena Ramos</strong> para el día <strong>28/09/2026 a las 09:00 hs</strong>?</p>
+        <br>
+        <div style="background: var(--success-bg); border: 1px solid var(--success-border); padding: 0.75rem; border-radius: 6px; font-size: 0.85rem; color: var(--success-text);">
+          ✓ <strong>Reintegro habilitado:</strong> La operación se realiza con más de 24 horas de anticipación. En caso de haber abonado seña, el reintegro automático del 100% de la seña se acreditará en su medio de pago en un plazo de 24 a 48 hs hábiles.
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-secondary" onclick="document.getElementById('modalCancelacion').style.display='none'">No, mantener turno</button>
+        <button type="button" class="btn btn-danger" onclick="alert('Turno cancelado exitosamente.'); document.getElementById('modalCancelacion').style.display='none'">Sí, confirmar cancelación</button>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>
