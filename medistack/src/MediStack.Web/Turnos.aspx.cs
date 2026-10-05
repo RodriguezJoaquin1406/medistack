@@ -1,0 +1,532 @@
+using System;
+using System.Data;
+using System.Data.SqlClient;
+using System.Globalization;
+using System.Web;
+using System.Web.UI.WebControls;
+using MediStack.Dominio;
+using MediStack.Negocio;
+
+namespace MediStack.Web
+{
+    public partial class TurnosPagina : PaginaProtegida
+    {
+        private readonly TurnosNegocio _negocio = new TurnosNegocio();
+
+        protected bool EsPaciente
+        {
+            get { return TieneRol("PACIENTE"); }
+        }
+
+        protected bool EsAdministrativo
+        {
+            get { return TieneRol("ADMINISTRATIVO"); }
+        }
+
+        protected bool EsReprogramacion
+        {
+            get { return ViewState["TurnoAReprogramar"] != null; }
+        }
+
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            if (!EsPaciente && !EsAdministrativo && !TieneRol("PROFESIONAL"))
+            {
+                Response.Redirect(ResolveUrl("~/Dashboard.aspx"), true);
+            }
+
+            SolicitudPanel.Visible = EsPaciente || EsAdministrativo;
+            PacienteSelectorPanel.Visible = EsAdministrativo;
+            if (TieneRol("PROFESIONAL"))
+            {
+                TituloListado.Text = "Turnos de mis pacientes";
+            }
+            else if (EsPaciente)
+            {
+                TituloListado.Text = "Mis turnos";
+            }
+            else
+            {
+                TituloListado.Text = "Turnos de la clínica";
+            }
+
+            if (!IsPostBack)
+            {
+                EjecutarConManejoDeErrores("No se pudieron cargar los turnos", () =>
+                {
+                    CargarOpcionesIniciales();
+                    Desde.Text = DateTime.Today.AddDays(-30).ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
+                    Hasta.Text = DateTime.Today.AddDays(365).ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
+                    FechaDisponibilidad.Text = DateTime.Today.AddDays(1)
+                        .ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
+                    CargarTurnos();
+                });
+            }
+        }
+
+        protected void Profesional_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            EjecutarConManejoDeErrores("No se pudieron cargar las especialidades", () =>
+            {
+                CargarEspecialidades();
+                LimpiarDisponibilidad();
+            });
+        }
+
+        protected void Especialidad_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            LimpiarMensaje();
+            MostrarDuracionSeleccionada();
+            LimpiarDisponibilidad();
+        }
+
+        protected void ConsultarDisponibilidad_Click(object sender, EventArgs e)
+        {
+            EjecutarConManejoDeErrores("No se pudo consultar la disponibilidad", CargarDisponibilidad);
+        }
+
+        protected void Filtrar_Click(object sender, EventArgs e)
+        {
+            EjecutarConManejoDeErrores("No se pudieron filtrar los turnos", CargarTurnos);
+        }
+
+        protected void DisponibilidadGrid_RowCommand(object sender, GridViewCommandEventArgs e)
+        {
+            if (e.CommandName != "ElegirHorario")
+            {
+                return;
+            }
+
+            int indice;
+            if (!int.TryParse(Convert.ToString(e.CommandArgument), out indice)
+                || indice < 0 || indice >= DisponibilidadGrid.DataKeys.Count)
+            {
+                return;
+            }
+
+            try
+            {
+                DataKey horario = DisponibilidadGrid.DataKeys[indice];
+                if (!Convert.ToBoolean(horario.Values["Disponible"]))
+                {
+                    MostrarError("Ese horario ya no está disponible. Consulta nuevamente la agenda.");
+                    CargarDisponibilidad();
+                    return;
+                }
+
+                Guid profesionalId = Guid.Parse(Convert.ToString(horario.Values["ProfesionalId"]));
+                int especialidadId = Convert.ToInt32(horario.Values["EspecialidadId"]);
+                DateTime fechaHora = Convert.ToDateTime(horario.Values["FechaHora"]);
+                Guid pacienteId = ObtenerPacienteSeleccionado();
+
+                if (!EsPropioPaciente(pacienteId) && !EsAdministrativo)
+                {
+                    MostrarError("No tienes permiso para solicitar un turno para otro paciente.");
+                    return;
+                }
+
+                SolicitudTurno solicitud = new SolicitudTurno
+                {
+                    PacienteId = pacienteId,
+                    ProfesionalId = profesionalId,
+                    EspecialidadId = especialidadId,
+                    FechaHora = fechaHora,
+                    Motivo = Motivo.Text
+                };
+
+                if (EsReprogramacion)
+                {
+                    int turnoOriginalId = (int)ViewState["TurnoAReprogramar"];
+                    TurnoDetalle original = _negocio.ObtenerTurno(turnoOriginalId);
+                    if (original == null)
+                    {
+                        throw new InvalidOperationException("El turno a reprogramar ya no existe. Actualiza la pagina.");
+                    }
+
+                    solicitud.PacienteId = original.PacienteId;
+                    _negocio.ReprogramarTurno(
+                        turnoOriginalId, EsPaciente ? (Guid?)ObtenerUsuarioActual() : null, solicitud);
+                    FinalizarReprogramacion();
+                    MostrarExito("El turno se reprogramo correctamente. El turno anterior quedo cancelado.");
+                }
+                else
+                {
+                    _negocio.SolicitarTurno(solicitud);
+                    MostrarExito("La solicitud de turno se registro correctamente.");
+                }
+
+                LimpiarDisponibilidad();
+                CargarTurnos();
+            }
+            catch (InvalidOperationException ex)
+            {
+                MostrarError(ex.Message);
+                CargarDisponibilidad();
+            }
+            catch (SqlException ex)
+            {
+                MostrarError("No se pudo guardar el turno (error SQL " + ex.Number + "). Actualiza la disponibilidad e intenta nuevamente.");
+                CargarDisponibilidad();
+            }
+        }
+
+        protected void TurnosGrid_RowCommand(object sender, GridViewCommandEventArgs e)
+        {
+            int indice;
+            if (!int.TryParse(Convert.ToString(e.CommandArgument), out indice)
+                || indice < 0 || indice >= TurnosGrid.DataKeys.Count)
+            {
+                return;
+            }
+
+            try
+            {
+                DataKey datos = TurnosGrid.DataKeys[indice];
+                int turnoId = Convert.ToInt32(datos.Values["TurnoId"]);
+                Guid pacienteId = Guid.Parse(Convert.ToString(datos.Values["PacienteId"]));
+
+                if (e.CommandName == "CancelarTurno")
+                {
+                    _negocio.CancelarTurno(turnoId, EsPaciente ? (Guid?)ObtenerUsuarioActual() : null);
+                    MostrarExito("El turno fue cancelado. El horario vuelve a estar disponible.");
+                }
+                else if (e.CommandName == "Reprogramar")
+                {
+                    PrepararReprogramacion(turnoId, pacienteId);
+                    return;
+                }
+                else if (e.CommandName == "Confirmar")
+                {
+                    if (!EsAdministrativo)
+                    {
+                        MostrarError("Solo el personal administrativo puede confirmar turnos.");
+                        return;
+                    }
+
+                    _negocio.CambiarEstado(turnoId, "Confirmado", true, null);
+                    MostrarExito("El turno fue confirmado.");
+                }
+                else if (e.CommandName == "Atendido" || e.CommandName == "Ausente")
+                {
+                    Guid? profesionalAutorizado = TieneRol("PROFESIONAL")
+                        ? (Guid?)ObtenerUsuarioActual() : null;
+                    _negocio.CambiarEstado(turnoId, e.CommandName, EsAdministrativo, profesionalAutorizado);
+                    MostrarExito(e.CommandName == "Atendido"
+                        ? "El turno fue marcado como atendido."
+                        : "El turno fue marcado como ausente.");
+                }
+                else
+                {
+                    return;
+                }
+
+                CargarTurnos();
+                if (SolicitudPanel.Visible)
+                {
+                    CargarDisponibilidad();
+                }
+            }
+            catch (InvalidOperationException ex)
+            {
+                MostrarError(ex.Message);
+            }
+            catch (SqlException ex)
+            {
+                MostrarError("No se pudo actualizar el turno (error SQL " + ex.Number + ").");
+            }
+        }
+
+        protected void CancelarReprogramacion_Click(object sender, EventArgs e)
+        {
+            FinalizarReprogramacion();
+            LimpiarMensaje();
+            Motivo.Text = string.Empty;
+            LimpiarDisponibilidad();
+        }
+
+        protected string EstadoHorario(object disponible, object estado)
+        {
+            if (Convert.ToBoolean(disponible))
+            {
+                return "Disponible";
+            }
+
+            return EsPaciente ? "Ocupado" : Convert.ToString(estado);
+        }
+
+        protected string PacienteOcupante(object paciente)
+        {
+            if (EsPaciente)
+            {
+                return string.Empty;
+            }
+
+            string nombre = Convert.ToString(paciente);
+            return string.IsNullOrWhiteSpace(nombre) ? string.Empty : nombre;
+        }
+
+        protected bool PuedeCancelarOReprogramar(object paciente, object estado, object fechaHora)
+        {
+            DateTime fecha = Convert.ToDateTime(fechaHora);
+            bool vigente = Convert.ToString(estado) == "Solicitado"
+                || Convert.ToString(estado) == "Confirmado";
+            if (!vigente || fecha <= DateTime.Now)
+            {
+                return false;
+            }
+
+            return EsAdministrativo
+                || (EsPaciente && Guid.TryParse(Convert.ToString(paciente), out Guid pacienteId)
+                    && pacienteId == ObtenerUsuarioActual());
+        }
+
+        protected bool PuedeCerrarTurno(object estado, object fechaHora)
+        {
+            return Convert.ToString(estado) == "Confirmado"
+                && Convert.ToDateTime(fechaHora) <= DateTime.Now
+                && (EsAdministrativo || TieneRol("PROFESIONAL"));
+        }
+
+        private void CargarOpcionesIniciales()
+        {
+            if (EsAdministrativo)
+            {
+                Paciente.DataSource = _negocio.ObtenerPacientesActivos();
+                Paciente.DataTextField = "Nombre";
+                Paciente.DataValueField = "PacienteId";
+                Paciente.DataBind();
+                Paciente.Items.Insert(0, new ListItem("Selecciona un paciente", string.Empty));
+            }
+
+            Profesional.DataSource = _negocio.ObtenerProfesionalesActivos();
+            Profesional.DataTextField = "Nombre";
+            Profesional.DataValueField = "ProfesionalId";
+            Profesional.DataBind();
+            Profesional.Items.Insert(0, new ListItem("Selecciona un profesional", string.Empty));
+            if (Profesional.Items.Count > 1)
+            {
+                Profesional.SelectedIndex = 1;
+            }
+
+            CargarEspecialidades();
+        }
+
+        private void CargarEspecialidades()
+        {
+            Guid profesionalId;
+            Especialidad.Items.Clear();
+            if (!Guid.TryParse(Profesional.SelectedValue, out profesionalId))
+            {
+                Especialidad.Items.Insert(0, new ListItem("Selecciona una especialidad", string.Empty));
+                DuracionEspecialidad.Text = string.Empty;
+                return;
+            }
+
+            Especialidad.DataSource = _negocio.ObtenerEspecialidades(profesionalId);
+            Especialidad.DataTextField = "Nombre";
+            Especialidad.DataValueField = "EspecialidadId";
+            Especialidad.DataBind();
+            Especialidad.Items.Insert(0, new ListItem("Selecciona una especialidad", string.Empty));
+            MostrarDuracionSeleccionada();
+        }
+
+        private void MostrarDuracionSeleccionada()
+        {
+            int especialidadId;
+            if (!int.TryParse(Especialidad.SelectedValue, out especialidadId))
+            {
+                DuracionEspecialidad.Text = "Elige una especialidad para ver la duración de la consulta.";
+                return;
+            }
+
+            DataTable especialidades = _negocio.ObtenerEspecialidades(
+                Guid.Parse(Profesional.SelectedValue));
+            foreach (DataRow fila in especialidades.Rows)
+            {
+                if (Convert.ToInt32(fila["EspecialidadId"]) == especialidadId)
+                {
+                    DuracionEspecialidad.Text = HttpUtility.HtmlEncode(
+                        "Duración estándar: " + fila["DuracionEstandarMinutos"] + " minutos.");
+                    return;
+                }
+            }
+
+            DuracionEspecialidad.Text = string.Empty;
+        }
+
+        private void CargarDisponibilidad()
+        {
+            Guid profesionalId;
+            int especialidadId;
+            DateTime fecha;
+            if (!Guid.TryParse(Profesional.SelectedValue, out profesionalId)
+                || !int.TryParse(Especialidad.SelectedValue, out especialidadId)
+                || !DateTime.TryParseExact(FechaDisponibilidad.Text, "yyyy-MM-dd",
+                    CultureInfo.InvariantCulture, DateTimeStyles.None, out fecha))
+            {
+                MostrarError("Selecciona un profesional, una especialidad y una fecha válidos.");
+                LimpiarDisponibilidad();
+                return;
+            }
+
+            if (fecha.Date < DateTime.Today)
+            {
+                MostrarError("Selecciona hoy o una fecha futura para consultar disponibilidad.");
+                LimpiarDisponibilidad();
+                return;
+            }
+
+            int? turnoExcluido = ViewState["TurnoAReprogramar"] == null
+                ? (int?)null
+                : Convert.ToInt32(ViewState["TurnoAReprogramar"]);
+            DisponibilidadGrid.DataSource = _negocio.ObtenerDisponibilidad(
+                profesionalId, especialidadId, fecha, turnoExcluido);
+            DisponibilidadGrid.DataBind();
+            MostrarDuracionSeleccionada();
+            LimpiarMensaje();
+        }
+
+        private void CargarTurnos()
+        {
+            DateTime desde;
+            DateTime hasta;
+            if (!DateTime.TryParseExact(Desde.Text, "yyyy-MM-dd", CultureInfo.InvariantCulture,
+                    DateTimeStyles.None, out desde)
+                || !DateTime.TryParseExact(Hasta.Text, "yyyy-MM-dd", CultureInfo.InvariantCulture,
+                    DateTimeStyles.None, out hasta))
+            {
+                MostrarError("Selecciona un período de fechas válido.");
+                return;
+            }
+
+            Guid? pacienteId = EsPaciente ? (Guid?)ObtenerUsuarioActual() : null;
+            Guid? profesionalId = TieneRol("PROFESIONAL") ? (Guid?)ObtenerUsuarioActual() : null;
+            TurnosGrid.DataSource = _negocio.ObtenerTurnos(pacienteId, profesionalId, desde, hasta);
+            TurnosGrid.DataBind();
+        }
+
+        private void PrepararReprogramacion(int turnoId, Guid pacienteId)
+        {
+            if (!EsAdministrativo && (!EsPaciente || pacienteId != ObtenerUsuarioActual()))
+            {
+                MostrarError("No tienes permiso para reprogramar este turno.");
+                return;
+            }
+
+            TurnoDetalle turno = _negocio.ObtenerTurno(turnoId);
+            if (turno == null || turno.FechaHora <= DateTime.Now
+                || (turno.Estado != "Solicitado" && turno.Estado != "Confirmado"))
+            {
+                MostrarError("Solo se pueden reprogramar turnos futuros solicitados o confirmados.");
+                return;
+            }
+
+            ViewState["TurnoAReprogramar"] = turnoId;
+            if (EsAdministrativo)
+            {
+                Paciente.SelectedValue = turno.PacienteId.ToString();
+            }
+
+            ListItem profesional = Profesional.Items.FindByValue(turno.ProfesionalId.ToString());
+            if (profesional != null)
+            {
+                Profesional.ClearSelection();
+                profesional.Selected = true;
+            }
+
+            CargarEspecialidades();
+            if (Especialidad.Items.FindByValue(turno.EspecialidadId.ToString()) != null)
+            {
+                Especialidad.SelectedValue = turno.EspecialidadId.ToString();
+            }
+
+            FechaDisponibilidad.Text = turno.FechaHora.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
+            Motivo.Text = turno.Motivo;
+            TituloSolicitud.Text = "Reprogramar turno " + turnoId;
+            CancelarReprogramacion.Visible = true;
+            CargarDisponibilidad();
+            MostrarExito("Elige un nuevo horario disponible. El turno actual se conserva si no se completa la reprogramación.");
+        }
+
+        private Guid ObtenerPacienteSeleccionado()
+        {
+            if (EsPaciente)
+            {
+                return ObtenerUsuarioActual();
+            }
+
+            Guid pacienteId;
+            if (EsAdministrativo && Guid.TryParse(Paciente.SelectedValue, out pacienteId))
+            {
+                return pacienteId;
+            }
+
+            throw new InvalidOperationException("Selecciona un paciente para solicitar el turno.");
+        }
+
+        private bool EsPropioPaciente(Guid pacienteId)
+        {
+            return EsPaciente && pacienteId == ObtenerUsuarioActual();
+        }
+
+        private Guid ObtenerUsuarioActual()
+        {
+            Guid usuarioId;
+            if (!Guid.TryParse(Convert.ToString(Session["UsuarioId"]), out usuarioId))
+            {
+                throw new InvalidOperationException("La sesión no contiene un identificador de usuario válido.");
+            }
+
+            return usuarioId;
+        }
+
+        private void EjecutarConManejoDeErrores(string contexto, Action accion)
+        {
+            try
+            {
+                accion();
+            }
+            catch (InvalidOperationException ex)
+            {
+                MostrarError(ex.Message);
+            }
+            catch (SqlException ex)
+            {
+                MostrarError(contexto + " (error SQL " + ex.Number + ").");
+            }
+        }
+
+        private void LimpiarDisponibilidad()
+        {
+            DisponibilidadGrid.DataSource = null;
+            DisponibilidadGrid.DataBind();
+        }
+
+        private void FinalizarReprogramacion()
+        {
+            ViewState.Remove("TurnoAReprogramar");
+            TituloSolicitud.Text = "Solicitar turno";
+            CancelarReprogramacion.Visible = false;
+        }
+
+        private void MostrarExito(string mensaje)
+        {
+            Mensaje.Text = HttpUtility.HtmlEncode(mensaje);
+            Mensaje.CssClass = "alert alert-success";
+            Mensaje.Visible = true;
+        }
+
+        private void MostrarError(string mensaje)
+        {
+            Mensaje.Text = HttpUtility.HtmlEncode(mensaje);
+            Mensaje.CssClass = "alert alert-error";
+            Mensaje.Visible = true;
+        }
+
+        private void LimpiarMensaje()
+        {
+            Mensaje.Text = string.Empty;
+            Mensaje.Visible = false;
+        }
+    }
+}

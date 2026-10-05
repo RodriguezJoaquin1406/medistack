@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{98BECF90-BA52-4634-B045-5F18E8478D22}</ProjectGuid>
+    <ProjectTypeGuids>{349C5851-65DF-11DA-9384-00065B846F21};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <RootNamespace>MediStack.Web</RootNamespace>
+    <AssemblyName>MediStack.Web</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <UseIISExpress>true</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Web" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MediStack.Dominio\MediStack.Dominio.csproj">
+      <Project>{0A32DC2C-85E0-44AE-AE96-FD026FCA7BE1}</Project>
+      <Name>MediStack.Dominio</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MediStack.Negocio\MediStack.Negocio.csproj">
+      <Project>{73FB5D75-F355-48F7-BC2E-28871A587E04}</Project>
+      <Name>MediStack.Negocio</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Account\Login.aspx" />
+    <Content Include="Content\site.css" />
+    <Content Include="Pacientes.aspx" />
+    <Content Include="FichaPaciente.aspx" />
+    <Content Include="Agenda.aspx" />
+    <Content Include="Turnos.aspx" />
+    <Content Include="Cobros.aspx" />
+    <Content Include="Caja.aspx" />
+    <Content Include="Profesionales.aspx" />
+    <Content Include="Especialidades.aspx" />
+    <Content Include="ObrasSociales.aspx" />
+    <Content Include="Coberturas.aspx" />
+    <Content Include="Convenios.aspx" />
+    <Content Include="Dashboard.aspx" />
+    <Content Include="Default.aspx" />
+    <Content Include="Salir.aspx" />
+    <Content Include="Site.Master" />
+    <Content Include="Web.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Account\Login.aspx.cs">
+      <DependentUpon>Login.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Account\Login.aspx.designer.cs">
+      <DependentUpon>Login.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Dashboard.aspx.cs">
+      <DependentUpon>Dashboard.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Dashboard.aspx.designer.cs">
+      <DependentUpon>Dashboard.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Default.aspx.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="PaginaProtegida.cs" />
+    <Compile Include="PaginaAdministrativa.cs" />
+    <Compile Include="Pacientes.aspx.cs">
+      <DependentUpon>Pacientes.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="FichaPaciente.aspx.cs">
+      <DependentUpon>FichaPaciente.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="FichaPaciente.aspx.designer.cs">
+      <DependentUpon>FichaPaciente.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Agenda.aspx.cs">
+      <DependentUpon>Agenda.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Agenda.aspx.designer.cs">
+      <DependentUpon>Agenda.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Turnos.aspx.cs">
+      <DependentUpon>Turnos.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Turnos.aspx.designer.cs">
+      <DependentUpon>Turnos.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Cobros.aspx.cs">
+      <DependentUpon>Cobros.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Cobros.aspx.designer.cs">
+      <DependentUpon>Cobros.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Caja.aspx.cs">
+      <DependentUpon>Caja.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Caja.aspx.designer.cs">
+      <DependentUpon>Caja.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Pacientes.aspx.designer.cs">
+      <DependentUpon>Pacientes.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Profesionales.aspx.cs">
+      <DependentUpon>Profesionales.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Profesionales.aspx.designer.cs">
+      <DependentUpon>Profesionales.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Especialidades.aspx.cs">
+      <DependentUpon>Especialidades.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Especialidades.aspx.designer.cs">
+      <DependentUpon>Especialidades.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ObrasSociales.aspx.cs">
+      <DependentUpon>ObrasSociales.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ObrasSociales.aspx.designer.cs">
+      <DependentUpon>ObrasSociales.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Coberturas.aspx.cs">
+      <DependentUpon>Coberturas.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Coberturas.aspx.designer.cs">
+      <DependentUpon>Coberturas.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Convenios.aspx.cs">
+      <DependentUpon>Convenios.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Convenios.aspx.designer.cs">
+      <DependentUpon>Convenios.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Salir.aspx.cs">
+      <DependentUpon>Salir.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Salir.aspx.designer.cs">
+      <DependentUpon>Salir.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Site.Master.cs">
+      <DependentUpon>Site.Master</DependentUpon>
+    </Compile>
+    <Compile Include="Site.Master.designer.cs">
+      <DependentUpon>Site.Master</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\WebApplications\Microsoft.WebApplication.targets" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\WebApplications\Microsoft.WebApplication.targets')" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

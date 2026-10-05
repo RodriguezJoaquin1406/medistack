@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{73FB5D75-F355-48F7-BC2E-28871A587E04}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>MediStack.Negocio</RootNamespace>
+    <AssemblyName>MediStack.Negocio</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MediStack.Dominio\MediStack.Dominio.csproj">
+      <Project>{0A32DC2C-85E0-44AE-AE96-FD026FCA7BE1}</Project>
+      <Name>MediStack.Dominio</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MediStack.Datos\MediStack.Datos.csproj">
+      <Project>{F9F2EC7D-877A-4155-86D1-F9426C3F7E12}</Project>
+      <Name>MediStack.Datos</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="UsuarioNegocio.cs" />
+    <Compile Include="GestionClinicaNegocio.cs" />
+    <Compile Include="FichaPacienteNegocio.cs" />
+    <Compile Include="AgendaNegocio.cs" />
+    <Compile Include="TurnosNegocio.cs" />
+    <Compile Include="CobrosNegocio.cs" />
+    <Compile Include="ResultadoLogin.cs" />
+    <Compile Include="VerificadorPassword.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
