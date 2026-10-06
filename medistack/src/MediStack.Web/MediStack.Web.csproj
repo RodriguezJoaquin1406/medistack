@@ -22,6 +22,7 @@
     <UseGlobalApplicationHostFile />
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
+    <Use64BitIISExpress />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -84,50 +85,63 @@
   <ItemGroup>
     <Compile Include="Account\Login.aspx.cs">
       <DependentUpon>Login.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Account\Login.aspx.designer.cs">
       <DependentUpon>Login.aspx</DependentUpon>
     </Compile>
     <Compile Include="Dashboard.aspx.cs">
       <DependentUpon>Dashboard.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Dashboard.aspx.designer.cs">
       <DependentUpon>Dashboard.aspx</DependentUpon>
     </Compile>
     <Compile Include="Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="PaginaProtegida.cs" />
-    <Compile Include="PaginaAdministrativa.cs" />
+    <Compile Include="PaginaProtegida.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="PaginaAdministrativa.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="Pacientes.aspx.cs">
       <DependentUpon>Pacientes.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="FichaPaciente.aspx.cs">
       <DependentUpon>FichaPaciente.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="FichaPaciente.aspx.designer.cs">
       <DependentUpon>FichaPaciente.aspx</DependentUpon>
     </Compile>
     <Compile Include="Agenda.aspx.cs">
       <DependentUpon>Agenda.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Agenda.aspx.designer.cs">
       <DependentUpon>Agenda.aspx</DependentUpon>
     </Compile>
     <Compile Include="Turnos.aspx.cs">
       <DependentUpon>Turnos.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Turnos.aspx.designer.cs">
       <DependentUpon>Turnos.aspx</DependentUpon>
     </Compile>
     <Compile Include="Cobros.aspx.cs">
       <DependentUpon>Cobros.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Cobros.aspx.designer.cs">
       <DependentUpon>Cobros.aspx</DependentUpon>
     </Compile>
     <Compile Include="Caja.aspx.cs">
       <DependentUpon>Caja.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Caja.aspx.designer.cs">
       <DependentUpon>Caja.aspx</DependentUpon>
@@ -137,42 +151,49 @@
     </Compile>
     <Compile Include="Profesionales.aspx.cs">
       <DependentUpon>Profesionales.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Profesionales.aspx.designer.cs">
       <DependentUpon>Profesionales.aspx</DependentUpon>
     </Compile>
     <Compile Include="Especialidades.aspx.cs">
       <DependentUpon>Especialidades.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Especialidades.aspx.designer.cs">
       <DependentUpon>Especialidades.aspx</DependentUpon>
     </Compile>
     <Compile Include="ObrasSociales.aspx.cs">
       <DependentUpon>ObrasSociales.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="ObrasSociales.aspx.designer.cs">
       <DependentUpon>ObrasSociales.aspx</DependentUpon>
     </Compile>
     <Compile Include="Coberturas.aspx.cs">
       <DependentUpon>Coberturas.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Coberturas.aspx.designer.cs">
       <DependentUpon>Coberturas.aspx</DependentUpon>
     </Compile>
     <Compile Include="Convenios.aspx.cs">
       <DependentUpon>Convenios.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Convenios.aspx.designer.cs">
       <DependentUpon>Convenios.aspx</DependentUpon>
     </Compile>
     <Compile Include="Salir.aspx.cs">
       <DependentUpon>Salir.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Salir.aspx.designer.cs">
       <DependentUpon>Salir.aspx</DependentUpon>
     </Compile>
     <Compile Include="Site.Master.cs">
       <DependentUpon>Site.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Site.Master.designer.cs">
       <DependentUpon>Site.Master</DependentUpon>

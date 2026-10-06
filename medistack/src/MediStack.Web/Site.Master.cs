@@ -12,11 +12,16 @@ namespace MediStack.Web
                 UsuarioActual.Visible = true;
                 NombreActual.Text = Server.HtmlEncode(Convert.ToString(Session["NombreCompleto"]));
                 RolActual.Text = Server.HtmlEncode(Convert.ToString(Session["RolNombre"]));
-                NavegacionAdministrativa.Visible = string.Equals(
-                    Convert.ToString(Session["RolCodigo"]),
-                    "ADMINISTRATIVO",
-                    StringComparison.OrdinalIgnoreCase);
+                string rolCodigo = Convert.ToString(Session["RolCodigo"]);
+                NavegacionAdministrativa.Visible = EsRol(rolCodigo, "ADMINISTRATIVO");
+                NavegacionPaciente.Visible = EsRol(rolCodigo, "PACIENTE");
+                NavegacionProfesional.Visible = EsRol(rolCodigo, "PROFESIONAL");
             }
+        }
+
+        private static bool EsRol(string rolCodigo, string rolEsperado)
+        {
+            return string.Equals(rolCodigo, rolEsperado, StringComparison.OrdinalIgnoreCase);
         }
     }
 }
