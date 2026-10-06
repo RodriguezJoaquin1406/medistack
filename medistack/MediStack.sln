@@ -8,7 +8,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MediStack.Datos", "src\Medi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MediStack.Negocio", "src\MediStack.Negocio\MediStack.Negocio.csproj", "{73FB5D75-F355-48F7-BC2E-28871A587E04}"
 EndProject
-Project("{349C5851-65DF-11DA-9384-00065B846F21}") = "MediStack.Web", "src\MediStack.Web\MediStack.Web.csproj", "{98BECF90-BA52-4634-B045-5F18E8478D22}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MediStack.Web", "src\MediStack.Web\MediStack.Web.csproj", "{98BECF90-BA52-4634-B045-5F18E8478D22}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
