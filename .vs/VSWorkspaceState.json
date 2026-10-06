@@ -2,8 +2,10 @@
   "ExpandedNodes": [
     "",
     "\\medistack",
-    "\\medistack\\src",
-    "\\medistack\\src\\MediStack.Datos\\Properties"
+    "\\medistack\\database",
+    "\\medistack\\pantallas",
+    "\\medistack\\spec",
+    "\\medistack\\src"
   ],
   "SelectedNode": "\\medistack\\MediStack.sln",
   "PreviewInSolutionExplorer": false

@@ -9,7 +9,10 @@
           rel="stylesheet"
           integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
           crossorigin="anonymous" />
-    <link href="<%: ResolveUrl("~/Content/site.css") %>" rel="stylesheet" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link href="<%: ResolveUrl("~/Content/site.css") %>?v=<%: System.IO.File.GetLastWriteTimeUtc(Server.MapPath("~/Content/site.css")).Ticks %>" rel="stylesheet" />
     <asp:ContentPlaceHolder ID="HeadContent" runat="server" />
 </head>
 <body>
@@ -17,8 +20,7 @@
         <a class="skip-link" href="#main-content">Saltar al contenido</a>
         <header class="site-header">
             <a class="brand" href="<%: ResolveUrl("~/Dashboard.aspx") %>" aria-label="MediStack, inicio">
-                <span class="brand-mark" aria-hidden="true">M</span>
-                <span>MediStack</span>
+                <img class="brand-logo" height="44" style="height:44px;width:auto" src="<%: ResolveUrl("~/Content/MediStack-logo-violeta.png") %>" alt="MediStack" />
             </a>
             <nav class="user-nav" aria-label="Cuenta">
                 <asp:PlaceHolder ID="UsuarioActual" runat="server" Visible="false">

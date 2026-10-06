@@ -1,0 +1,158 @@
+/* Diseño Soft UI del login (basado en pantallas/Acceso_Perfil.html). */
+body:has(.login-page) {
+    background:
+        radial-gradient(ellipse at 10% 10%, rgba(33, 82, 255, .08), transparent 32rem),
+        radial-gradient(ellipse at 90% 80%, rgba(33, 212, 253, .06), transparent 28rem),
+        #f6f8fc;
+    font-family: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    -webkit-font-smoothing: antialiased;
+}
+
+body:has(.login-page) .site-header,
+body:has(.login-page) .site-footer {
+    display: none;
+}
+
+body:has(.login-page) .main-container {
+    width: 100%;
+    min-height: 100vh;
+    padding: 0;
+}
+
+.login-page {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: clamp(32px, 6vw, 72px) 20px;
+}
+
+.login-card {
+    width: 100%;
+    max-width: 460px;
+    padding: clamp(28px, 4vw, 44px);
+    background: rgba(255, 255, 255, .96);
+    border: 1px solid rgba(226, 232, 240, .88);
+    border-radius: 24px;
+    box-shadow: 0 24px 64px rgba(15, 23, 42, .1), 0 4px 12px rgba(15, 23, 42, .03);
+    animation: login-elevar .45s cubic-bezier(.2, .8, .2, 1) both;
+}
+
+.login-logo {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 32px;
+}
+
+.login-logo img {
+    display: block;
+    width: min(100%, 250px);
+    height: auto;
+}
+
+.login-heading {
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.login-heading h1 {
+    margin: 0 0 8px;
+    color: #1e293b;
+    font-size: clamp(1.55rem, 3vw, 1.85rem);
+    font-weight: 700;
+    letter-spacing: -.04em;
+    line-height: 1.2;
+}
+
+.login-heading p {
+    margin: 0;
+    color: #64748b;
+    font-size: .96rem;
+    line-height: 1.65;
+}
+
+.login-card .login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.login-card .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.login-card .form-group label {
+    color: #334155;
+    font-size: .875rem;
+    font-weight: 600;
+}
+
+.login-card .form-control {
+    min-height: 50px;
+    padding: 12px 15px;
+    color: #1e293b;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    font-size: .95rem;
+    transition: border-color .2s ease, box-shadow .2s ease;
+}
+
+.login-card .form-control:hover {
+    border-color: #cbd5e1;
+}
+
+.login-card .form-control:focus {
+    border-color: #2152ff;
+    box-shadow: 0 0 0 4px rgba(33, 82, 255, .12);
+    outline: none;
+}
+
+.login-card .button-primary {
+    min-height: 50px;
+    color: #fff;
+    background: linear-gradient(135deg, #2152ff, #21d4fd);
+    border-radius: 12px;
+    box-shadow: 0 8px 18px rgba(33, 82, 255, .22);
+    font-size: .95rem;
+    transition: transform .2s ease, box-shadow .2s ease;
+}
+
+.login-card .button-primary:hover {
+    background: linear-gradient(135deg, #1a42e0, #1bb8e0);
+    box-shadow: 0 11px 22px rgba(33, 82, 255, .3);
+    transform: translateY(-1px);
+}
+
+.login-card .button-primary:active {
+    transform: translateY(0);
+}
+
+.login-card .alert {
+    border-radius: 12px;
+}
+
+.login-card .form-note {
+    margin: 0;
+    padding-top: 22px;
+    border-top: 1px solid #eef2f7;
+    color: #64748b;
+    text-align: center;
+}
+
+.login-card a:focus-visible,
+.login-card button:focus-visible,
+.login-card input:focus-visible {
+    outline: 3px solid rgba(33, 82, 255, .28);
+    outline-offset: 3px;
+}
+
+@keyframes login-elevar {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .login-card { animation: none; }
+}

@@ -1,11 +1,12 @@
 :root {
     color-scheme: light;
-    --color-ink: #18324b;
-    --color-muted: #5b6b7a;
-    --color-primary: #087e8b;
-    --color-primary-dark: #06636d;
-    --color-background: #f3f7f8;
-    --color-border: #dce6e9;
+    --color-ink: #1e293b;
+    --color-muted: #64748b;
+    --color-primary: #2152ff;
+    --color-primary-dark: #1a42e0;
+    --color-background: #f6f8fc;
+    --color-primary-end: #21d4fd;
+    --color-border: #e8edf5;
     --color-white: #ffffff;
     --color-error: #a12828;
 }
@@ -20,10 +21,20 @@ html {
 }
 
 body {
+    background:
+        radial-gradient(ellipse at 10% 10%, rgba(33, 82, 255, .08), transparent 32rem),
+        radial-gradient(ellipse at 90% 80%, rgba(33, 212, 253, .06), transparent 28rem),
+        var(--color-background);
+    background-attachment: fixed;
+    -webkit-font-smoothing: antialiased;
+}
+
+body {
     margin: 0;
     color: var(--color-ink);
-    font-family: "Segoe UI", Arial, sans-serif;
-    line-height: 1.6;
+    font-family: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+    font-size: 14px;
+    line-height: 1.55;
 }
 
 a {
@@ -34,7 +45,7 @@ a:focus-visible,
 button:focus-visible,
 input:focus-visible,
 [tabindex="-1"]:focus-visible {
-    outline: 3px solid #e0a800;
+    outline: 3px solid rgba(33, 82, 255, .35);
     outline-offset: 3px;
 }
 
@@ -57,8 +68,16 @@ input:focus-visible,
     justify-content: space-between;
     min-height: 76px;
     padding: .75rem max(1.25rem, calc((100vw - 1120px) / 2));
-    background: var(--color-white);
+    background: rgba(255, 255, 255, .9);
     border-bottom: 1px solid var(--color-border);
+    box-shadow: 0 4px 18px rgba(15, 23, 42, .04);
+    backdrop-filter: blur(16px);
+}
+
+.brand-logo {
+    display: block;
+    width: auto;
+    height: 44px;
 }
 
 .brand {
@@ -77,8 +96,8 @@ input:focus-visible,
     height: 2.2rem;
     place-items: center;
     color: var(--color-white);
-    background: var(--color-primary);
-    border-radius: .65rem;
+    background: linear-gradient(135deg, #2152ff, #21d4fd);
+    border-radius: .85rem;
 }
 
 .user-nav,
@@ -109,7 +128,7 @@ input:focus-visible,
 }
 
 .admin-nav {
-    background: var(--color-white);
+    background: rgba(255, 255, 255, .8);
     border-bottom: 1px solid var(--color-border);
 }
 
@@ -123,13 +142,19 @@ input:focus-visible,
 }
 
 .admin-nav-inner a {
-    padding: .25rem 0;
+    padding: .35rem .7rem;
+    color: #64748b;
+    border-radius: 10px;
     font-size: .92rem;
     font-weight: 600;
     text-decoration: none;
 }
 
-.admin-nav-inner a:hover,
+.admin-nav-inner a:hover {
+    color: var(--color-primary-dark);
+    background: #eef1ff;
+}
+
 .row-actions a:hover {
     text-decoration: underline;
 }
@@ -180,8 +205,8 @@ input:focus-visible,
     padding: 1.5rem;
     background: var(--color-white);
     border: 1px solid var(--color-border);
-    border-radius: 1rem;
-    box-shadow: 0 12px 35px rgb(24 50 75 / 6%);
+    border-radius: 16px;
+    box-shadow: 0 1px 3px rgb(0 0 0 / 6%), 0 1px 2px rgb(0 0 0 / 4%);
 }
 
 .login-panel {
@@ -204,28 +229,39 @@ input:focus-visible,
     padding: .65rem .75rem;
     color: var(--color-ink);
     background: var(--color-white);
-    border: 1px solid #9eafb9;
-    border-radius: .45rem;
+    border: 1px solid #e2e8f0;
+    border-radius: .75rem;
     font: inherit;
+    transition: border-color .2s ease, box-shadow .2s ease;
+}
+
+.form-control:focus {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 4px rgba(33, 82, 255, .12);
+    outline: none;
 }
 
 .button {
     min-height: 46px;
     padding: .65rem 1rem;
     border: 0;
-    border-radius: .45rem;
+    border-radius: .75rem;
     cursor: pointer;
+    transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
     font: inherit;
     font-weight: 700;
 }
 
 .button-primary {
     color: var(--color-white);
-    background: var(--color-primary);
+    background: linear-gradient(135deg, #2152ff, #21d4fd);
+    box-shadow: 0 8px 18px rgba(33, 82, 255, .22);
 }
 
 .button-primary:hover {
-    background: var(--color-primary-dark);
+    background: linear-gradient(135deg, #1a42e0, #1bb8e0);
+    box-shadow: 0 11px 22px rgba(33, 82, 255, .3);
+    transform: translateY(-1px);
 }
 
 .button-wide {
@@ -283,7 +319,7 @@ input:focus-visible,
 .alert {
     display: block;
     padding: .75rem;
-    border-radius: .4rem;
+    border-radius: .75rem;
 }
 
 .alert-error {
@@ -297,7 +333,9 @@ input:focus-visible,
 }
 
 .page-heading h1 {
-    font-size: clamp(2rem, 4vw, 2.6rem);
+    font-size: clamp(1.6rem, 3vw, 2rem);
+    font-weight: 800;
+    letter-spacing: -.02em;
 }
 
 .page-heading p:last-child {
@@ -337,8 +375,8 @@ input:focus-visible,
 .status-tag {
     display: inline-block;
     padding: .2rem .55rem;
-    color: #38546a;
-    background: #eaf1f4;
+    color: #1a42e0;
+    background: #eef1ff;
     border-radius: 2rem;
     font-size: .8rem;
     font-weight: 600;
@@ -367,20 +405,20 @@ input:focus-visible,
 
 .button-secondary {
     color: var(--color-white);
-    background: var(--color-primary);
+    background: linear-gradient(135deg, #2152ff, #21d4fd);
 }
 
 .button-secondary:hover {
-    background: var(--color-primary-dark);
+    background: linear-gradient(135deg, #1a42e0, #1bb8e0);
 }
 
 .button-light {
     color: var(--color-ink);
-    background: #eaf1f4;
+    background: #eef1ff;
 }
 
 .button-light:hover {
-    background: #dce8ed;
+    background: #dde4ff;
 }
 
 .section-heading-row {
@@ -439,11 +477,34 @@ input:focus-visible,
     vertical-align: top;
 }
 
+.data-table {
+    font-size: 13px;
+}
+
 .data-table th {
-    color: var(--color-muted);
-    font-size: .85rem;
-    font-weight: 700;
+    color: #fff;
+    background: linear-gradient(to top, #2152ff, #21d4fd);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: .04em;
+    text-transform: uppercase;
     white-space: nowrap;
+}
+
+.data-table th:first-child {
+    border-top-left-radius: 8px;
+}
+
+.data-table th:last-child {
+    border-top-right-radius: 8px;
+}
+
+.data-table tbody tr:nth-child(even) {
+    background: #f8fafc;
+}
+
+.data-table tbody tr:hover {
+    background: #eef1ff;
 }
 
 .row-actions {
