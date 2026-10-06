@@ -10,7 +10,7 @@
   <!-- ================================================================= -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
   <style>
     /* =================================================================
@@ -667,6 +667,586 @@
         width: 100%;
       }
     }
+
+    /* Soft UI / MUI visual language used by the MediStack frontend. */
+    :root {
+      --color-fondo: #f6f8fc;
+      --color-borde: #e8edf5;
+      --color-borde-hover: #cbd5e1;
+      --color-texto-principal: #0f172a;
+      --color-texto-secundario: #64748b;
+      --color-texto-claro: #94a3b8;
+      --color-azul: #6366f1;
+      --color-azul-hover: #4f46e5;
+      --color-azul-fondo: #eef2ff;
+      --color-azul-borde: #c7d2fe;
+      --color-exito: #059669;
+      --color-exito-fondo: #ecfdf5;
+      --sombra-tarjeta: 0 8px 24px rgba(15, 23, 42, 0.06);
+      --sombra-flotante: 0 20px 48px rgba(15, 23, 42, 0.12);
+      --fuente-principal: 'Roboto', -apple-system, BlinkMacSystemFont, sans-serif;
+      --radio-borde: 12px;
+      --radio-tarjeta: 20px;
+    }
+
+    body {
+      background:
+        radial-gradient(ellipse at 10% 10%, rgba(99, 102, 241, 0.08), transparent 32rem),
+        radial-gradient(ellipse at 90% 80%, rgba(59, 130, 246, 0.06), transparent 28rem),
+        var(--color-fondo);
+      letter-spacing: 0.01em;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a {
+      font-weight: 600;
+      transition: color 0.2s ease, opacity 0.2s ease;
+    }
+
+    a:hover {
+      text-decoration: none;
+    }
+
+    button,
+    input,
+    select {
+      font: inherit;
+    }
+
+    button:focus-visible,
+    a:focus-visible,
+    input:focus-visible,
+    select:focus-visible {
+      outline: 3px solid rgba(99, 102, 241, 0.28);
+      outline-offset: 3px;
+    }
+
+    .barra-estudiante {
+      padding: 12px clamp(16px, 3vw, 40px);
+      background: rgba(255, 255, 255, 0.88);
+      border-bottom-color: rgba(226, 232, 240, 0.8);
+      box-shadow: 0 4px 18px rgba(15, 23, 42, 0.04);
+      backdrop-filter: blur(16px);
+    }
+
+    .badge-estudiante {
+      padding: 5px 10px;
+      color: #4f46e5;
+      background: #eef2ff;
+      border: 0;
+      letter-spacing: 0.04em;
+    }
+
+    .titulo-estudiante {
+      color: #475569;
+      font-weight: 600;
+    }
+
+    .nav-estudiante {
+      gap: 8px;
+    }
+
+    .btn-pestana {
+      padding: 8px 13px;
+      color: #64748b;
+      border-color: transparent;
+      border-radius: 10px;
+      font-weight: 600;
+    }
+
+    .btn-pestana:hover {
+      color: #0f172a;
+      background: #f1f5f9;
+      border-color: transparent;
+    }
+
+    .btn-pestana.activo {
+      color: #fff;
+      background: linear-gradient(135deg, #6366f1, #4f46e5);
+      border-color: transparent;
+      box-shadow: 0 6px 14px rgba(99, 102, 241, 0.24);
+    }
+
+    .contenedor-centrado {
+      position: relative;
+      isolation: isolate;
+      overflow: hidden;
+      padding: clamp(32px, 6vw, 72px) 20px;
+    }
+
+    .contenedor-centrado::before,
+    .contenedor-centrado::after {
+      position: absolute;
+      z-index: -1;
+      width: 280px;
+      height: 280px;
+      border: 1px solid rgba(99, 102, 241, 0.1);
+      border-radius: 50%;
+      content: "";
+      pointer-events: none;
+    }
+
+    .contenedor-centrado::before {
+      top: 7%;
+      left: max(-140px, calc(50% - 620px));
+      box-shadow: 0 0 0 28px rgba(99, 102, 241, 0.025), 0 0 0 58px rgba(99, 102, 241, 0.02);
+    }
+
+    .contenedor-centrado::after {
+      right: max(-140px, calc(50% - 620px));
+      bottom: 4%;
+      width: 190px;
+      height: 190px;
+      box-shadow: 0 0 0 24px rgba(59, 130, 246, 0.025), 0 0 0 50px rgba(59, 130, 246, 0.02);
+    }
+
+    .tarjeta-formulario {
+      max-width: 460px;
+      padding: clamp(28px, 4vw, 44px);
+      background: rgba(255, 255, 255, 0.96);
+      border: 1px solid rgba(226, 232, 240, 0.88);
+      border-radius: 24px;
+      box-shadow: 0 24px 64px rgba(15, 23, 42, 0.1), 0 4px 12px rgba(15, 23, 42, 0.03);
+      animation: elevar 0.45s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+    }
+
+    .tarjeta-formulario.ancho-grande {
+      max-width: 760px;
+    }
+
+    .logo-marca {
+      gap: 12px;
+      margin-bottom: 32px;
+    }
+
+    .imagen-marca {
+      display: block;
+      width: min(100%, 250px);
+      height: auto;
+      object-fit: contain;
+    }
+
+    .navbar-dashboard .imagen-marca {
+      width: min(220px, 34vw);
+    }
+
+    .icono-marca {
+      width: 44px;
+      height: 44px;
+      border-radius: 14px;
+      background: linear-gradient(145deg, #818cf8, #4f46e5);
+      box-shadow: 0 8px 18px rgba(99, 102, 241, 0.3);
+      font-size: 1.6rem;
+    }
+
+    .nombre-marca {
+      font-size: 1.38rem;
+      letter-spacing: -0.04em;
+    }
+
+    .encabezado-seccion {
+      margin-bottom: 30px;
+    }
+
+    .titulo-pantalla {
+      margin-bottom: 8px;
+      font-size: clamp(1.55rem, 3vw, 1.85rem);
+      font-weight: 700;
+      letter-spacing: -0.04em;
+    }
+
+    .subtitulo-pantalla {
+      max-width: 520px;
+      margin: 0 auto;
+      color: #64748b;
+      font-size: 0.96rem;
+      line-height: 1.65;
+    }
+
+    .formulario-base {
+      gap: 20px;
+    }
+
+    .grupo-campo {
+      gap: 8px;
+    }
+
+    .etiqueta-campo {
+      color: #334155;
+      font-size: 0.875rem;
+      font-weight: 600;
+    }
+
+    .input-texto,
+    .select-estilo {
+      min-height: 50px;
+      padding: 12px 15px;
+      color: #0f172a;
+      background-color: #fff;
+      border-color: #e2e8f0;
+      border-radius: 12px;
+      font-size: 0.95rem;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+    }
+
+    .input-texto:hover,
+    .select-estilo:hover {
+      border-color: #cbd5e1;
+    }
+
+    .input-texto:focus,
+    .select-estilo:focus {
+      border-color: #6366f1;
+      box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.12);
+    }
+
+    .input-texto::placeholder {
+      color: #94a3b8;
+    }
+
+    .fila-opciones {
+      gap: 12px;
+      color: #64748b;
+      font-size: 0.84rem;
+    }
+
+    .grupo-checkbox {
+      gap: 9px;
+      line-height: 1.5;
+    }
+
+    .grupo-checkbox input[type="checkbox"] {
+      width: 17px;
+      height: 17px;
+      accent-color: #6366f1;
+    }
+
+    .btn-azul {
+      min-height: 50px;
+      padding: 13px 20px;
+      color: #fff;
+      background: linear-gradient(135deg, #6366f1, #4f46e5);
+      border: 0;
+      border-radius: 12px;
+      box-shadow: 0 8px 18px rgba(99, 102, 241, 0.22);
+      font-size: 0.95rem;
+      font-weight: 700;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+    }
+
+    .btn-azul:hover {
+      background: linear-gradient(135deg, #5b5eea, #4338ca);
+      box-shadow: 0 11px 22px rgba(99, 102, 241, 0.3);
+      transform: translateY(-1px);
+    }
+
+    .btn-azul:active {
+      transform: translateY(0);
+    }
+
+    .btn-blanco-borde {
+      min-height: 42px;
+      padding: 10px 15px;
+      color: #334155;
+      background: #fff;
+      border-color: #e2e8f0;
+      border-radius: 11px;
+      font-size: 0.88rem;
+      font-weight: 600;
+    }
+
+    .btn-blanco-borde:hover {
+      color: #4f46e5;
+      background: #f8fafc;
+      border-color: #c7d2fe;
+    }
+
+    .pie-formulario {
+      margin-top: 28px;
+      padding-top: 22px;
+      border-color: #eef2f7;
+      font-size: 0.9rem;
+    }
+
+    .caja-info {
+      color: #3730a3;
+      background: #eef2ff;
+      border-color: #e0e7ff;
+      border-radius: 12px;
+      line-height: 1.55;
+    }
+
+    .navbar-dashboard {
+      min-height: 76px;
+      padding: 14px clamp(16px, 4vw, 56px);
+      background: rgba(255, 255, 255, 0.9);
+      border-bottom: 1px solid #e8edf5;
+      box-shadow: 0 4px 18px rgba(15, 23, 42, 0.04);
+      backdrop-filter: blur(16px);
+    }
+
+    .navbar-dashboard .logo-marca {
+      justify-content: flex-start;
+    }
+
+    .nav-usuario {
+      gap: 12px;
+    }
+
+    .avatar-usuario,
+    .avatar-grande {
+      color: #fff;
+      background: linear-gradient(145deg, #818cf8, #4f46e5);
+      border: 0;
+      box-shadow: 0 7px 16px rgba(99, 102, 241, 0.22);
+    }
+
+    .nombre-usuario {
+      color: #0f172a;
+      font-size: 0.92rem;
+    }
+
+    .rol-badge {
+      color: #6366f1;
+      font-weight: 600;
+    }
+
+    .cuerpo-dashboard {
+      max-width: 1240px;
+      padding: clamp(28px, 4vw, 52px) clamp(16px, 3vw, 32px);
+      gap: 28px;
+    }
+
+    .saludo-dashboard h1 {
+      font-size: clamp(1.65rem, 3vw, 2.15rem);
+      letter-spacing: -0.045em;
+    }
+
+    .saludo-dashboard p {
+      max-width: 760px;
+      color: #64748b;
+      font-size: 0.96rem;
+      line-height: 1.65;
+    }
+
+    .grilla-resumen {
+      gap: 20px;
+    }
+
+    .tarjeta-resumen,
+    .seccion-perfil {
+      border-color: #e8edf5;
+      border-radius: 18px;
+      box-shadow: var(--sombra-tarjeta);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .tarjeta-resumen {
+      position: relative;
+      min-height: 170px;
+      padding: 24px;
+      overflow: hidden;
+    }
+
+    .tarjeta-resumen::after {
+      position: absolute;
+      top: -34px;
+      right: -34px;
+      width: 92px;
+      height: 92px;
+      border-radius: 50%;
+      background: rgba(99, 102, 241, 0.06);
+      content: "";
+      pointer-events: none;
+    }
+
+    .tarjeta-resumen:hover,
+    .seccion-perfil:hover {
+      box-shadow: var(--sombra-flotante);
+      transform: translateY(-2px);
+    }
+
+    .tarjeta-resumen-titulo {
+      color: #64748b;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.07em;
+    }
+
+    .badge-estado {
+      padding: 5px 10px;
+      color: #047857;
+      background: #ecfdf5;
+    }
+
+    .tarjeta-resumen-valor {
+      color: #0f172a;
+      font-size: 1.42rem;
+      letter-spacing: -0.025em;
+    }
+
+    .tarjeta-resumen-detalle {
+      color: #64748b;
+      line-height: 1.55;
+    }
+
+    .seccion-perfil {
+      background: rgba(255, 255, 255, 0.96);
+    }
+
+    .perfil-cabecera {
+      padding: 24px clamp(20px, 3vw, 32px);
+      border-color: #eef2f7;
+    }
+
+    .perfil-usuario-info {
+      gap: 16px;
+    }
+
+    .avatar-grande {
+      width: 68px;
+      height: 68px;
+      font-size: 1.35rem;
+    }
+
+    .perfil-titulos h2 {
+      margin-bottom: 4px;
+      font-size: 1.2rem;
+      letter-spacing: -0.025em;
+    }
+
+    .perfil-titulos span {
+      color: #64748b;
+    }
+
+    .grilla-datos-perfil {
+      padding: 28px clamp(20px, 3vw, 32px);
+      gap: 24px 28px;
+    }
+
+    .item-dato-etiqueta {
+      font-size: 0.74rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+    }
+
+    .item-dato-valor {
+      overflow-wrap: anywhere;
+      font-size: 0.96rem;
+      font-weight: 600;
+    }
+
+    .perfil-acciones {
+      padding: 18px clamp(20px, 3vw, 32px);
+      background: #f8fafc;
+      border-color: #eef2f7;
+    }
+
+    @keyframes elevar {
+      from {
+        opacity: 0;
+        transform: translateY(12px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @media (max-width: 760px) {
+      .barra-estudiante {
+        align-items: flex-start;
+      }
+
+      .info-estudiante {
+        flex-wrap: wrap;
+      }
+
+      .nav-estudiante {
+        width: 100%;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        padding-bottom: 2px;
+        scrollbar-width: thin;
+      }
+
+      .btn-pestana {
+        flex: 0 0 auto;
+      }
+
+      .tarjeta-formulario.ancho-grande {
+        max-width: 620px;
+      }
+    }
+
+    @media (max-width: 520px) {
+      .barra-estudiante {
+        position: relative;
+      }
+
+      .titulo-estudiante {
+        font-size: 0.8rem;
+      }
+
+      .contenedor-centrado {
+        padding: 28px 14px;
+      }
+
+      .tarjeta-formulario {
+        padding: 28px 22px;
+        border-radius: 20px;
+      }
+
+      .encabezado-seccion {
+        margin-bottom: 24px;
+      }
+
+      .fila-opciones {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .navbar-dashboard {
+        align-items: flex-start;
+        gap: 12px;
+      }
+
+      .navbar-dashboard > .logo-marca {
+        margin-bottom: 0 !important;
+      }
+
+      .nav-usuario {
+        flex-wrap: wrap;
+        justify-content: flex-end;
+      }
+
+      .datos-resumen-usuario {
+        display: none;
+      }
+
+      .saludo-dashboard .btn-azul {
+        width: 100% !important;
+      }
+
+      .perfil-usuario-info {
+        align-items: flex-start;
+      }
+
+      .perfil-acciones .btn-azul {
+        width: 100% !important;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        scroll-behavior: auto !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
   </style>
 </head>
 <body>
@@ -706,8 +1286,7 @@
         
         <!-- Logotipo MediStack -->
         <div class="logo-marca">
-          <div class="icono-marca">+</div>
-          <span class="nombre-marca">MediStack</span>
+          <img class="imagen-marca" src="MediStack-logo-violeta.png" alt="MediStack, gestión clínica">
         </div>
 
         <!-- Encabezado de la pantalla -->
@@ -775,8 +1354,7 @@
         
         <!-- Logotipo MediStack -->
         <div class="logo-marca">
-          <div class="icono-marca">+</div>
-          <span class="nombre-marca">MediStack</span>
+          <img class="imagen-marca" src="MediStack-logo-violeta.png" alt="MediStack, gestión clínica">
         </div>
 
         <!-- Encabezado de registro -->
@@ -883,8 +1461,7 @@
         
         <!-- Logotipo MediStack -->
         <div class="logo-marca">
-          <div class="icono-marca">+</div>
-          <span class="nombre-marca">MediStack</span>
+          <img class="imagen-marca" src="MediStack-logo-violeta.png" alt="MediStack, gestión clínica">
         </div>
 
         <!-- Encabezado de recuperación -->
@@ -941,8 +1518,7 @@
     <!-- Barra de navegación del sistema -->
     <header class="navbar-dashboard">
       <div class="logo-marca" style="margin-bottom: 0;">
-        <div class="icono-marca">+</div>
-        <span class="nombre-marca">MediStack</span>
+        <img class="imagen-marca" src="MediStack-logo-violeta.png" alt="MediStack, gestión clínica">
       </div>
 
       <div class="nav-usuario">
